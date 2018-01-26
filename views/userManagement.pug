@@ -1,0 +1,107 @@
+extends ./layout
+
+block content
+    h3 User Management
+    
+    .btn-group(style="margin-bottom:100px")
+        button.newUserButton.btn.btn-success.btn-lg
+            span.glyphicon.glyphicon-user
+            | &nbsp;Add New User
+    
+    #newUserForm.hidden
+        form#newUser.form-group
+            .form-group
+                input.firstName.form-control(placeholder="First Name" name="firstName")
+            .form-group
+                input.lastName.form-control(placeholder="Last Name" name="lastName")
+        .btn-group(style="margin-bottom:50px")
+            button#submitNewUser.newUserButton.btn.btn-success.btn-lg
+                span.glyphicon.glyphicon-user
+                | &nbsp;Submit
+    
+    h3 Search
+    form#searchForm.form-group
+        .form-group
+            input.form-control(placeholder="First Name" name="firstName")
+        .form-group
+            input.form-control(placeholder="Last Name" name="lastName")
+    
+    .btn-group
+        button#searchButton.btn.btn-success.btn-lg
+            span.glyphicon.glyphicon-search
+            | &nbsp;Search User
+    #searchResults
+
+    .hidden.userTemplate.user(style="display:inline-block;width:100%;background-color:#DDDDDD;padding:10px;border-radius:10px;margin-top:5px")
+        .userInfo(style="float:left;")
+            p.firstName
+            p.lastName
+            p.dateCreated
+
+    .userList(style="margin-top:20px")
+        each user, index in users
+            .user(style="display:inline-block;width:100%;background-color:#DDDDDD;padding:10px;border-radius:10px;margin-top:5px")
+                .userInfo(style="float:left;")
+                    p First Name: #{user.firstName}
+                    p Last Name: #{user.lastName}
+                    p Date Created: #{user.dateCreated}
+                .btn-group(style="margin-right:20px;float:right;position: relative;top: 50%;transform: translateY(50%);")
+                    button.btn.btn-danger.btn-lg(onclick="removeUser('"+user._id+"')")
+                        span.glyphicon.glyphicon-remove
+                        | &nbsp;Delete User
+
+        
+
+
+
+    script.
+        $('.newUserButton').on('click',function(){
+            $('#newUserForm').removeClass('hidden');
+        })
+        $('#submitNewUser').on('click',function(){
+            var newUserData = $('form#newUser').serialize();
+            $.ajax({
+                type:"POST",
+                url:"/createUser",
+                data:newUserData,
+                success:function(data){
+                    // Add failure prompt
+                    toastr.success("User has been successfully added!")
+                },
+                dataType:"json"
+            })
+        })
+        var removeUser = function(userID){
+            $.ajax({
+                type:"POST",
+                url:"/deleteUser",
+                data:{userID:userID},
+                success:function(data){
+                    // Add failure prompt
+                    toastr.success("User has been successfully removed")
+                },
+                dataType:"json"
+            })
+        } 
+
+        $('#searchButton').on('click',function(){
+            var searchData = $('form#searchForm').serialize();
+            $.ajax({
+                type:"GET",
+                url:"/searchUser",
+                data:searchData,
+                success:function(data){
+                    // Add failure prompt
+                    $('.userList').addClass('hidden');
+                    for(var i = 0; i < data.users.length; i++){
+                        var user = $('.userTemplate').clone();
+                        $(user).removeClass('userTemplate').removeClass('hidden')
+                        $(user).children('.userInfo').children('.firstName').text(data.users[i].firstName)
+                        $(user).children('.userInfo').children('.lastName').text(data.users[i].lastName)
+                        $(user).children('.userInfo').children('.dateCreated').text(data.users[i].dateCreated)
+                        $('#searchResults').append(user)
+                    }
+                },
+                dataType:"json"
+            })
+        })

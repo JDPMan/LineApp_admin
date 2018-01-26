@@ -1,0 +1,33 @@
+doctype html
+html
+	head
+		script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js",type="text/javascript")
+
+		link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", rel="stylesheet")
+		link(rel="stylesheet",href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css")
+		link(rel='stylesheet',href='//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css')
+
+		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js")
+
+		script(src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js")
+			
+		script(src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.min.js")
+		script.
+			toastr.options = {
+				"debug": false,
+				"positionClass": "toast-top-full-width",
+				"fadeIn": 300,
+				"fadeOut": 1000,
+				"timeOut": 5000,
+				"extendedTimeOut": 1000
+			}
+		block head
+	body
+		div(style='padding: 0 15px;')
+			div(class='row')
+				.col-lg-2.col-md-3.col-sm-3
+					include navigation
+				.col-lg-10.col-md-9.col-sm-9(style="padding-bottom:25px; margin-bottom:150px")
+					block content
+		block footer

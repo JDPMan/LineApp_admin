@@ -1,0 +1,21 @@
+mixin navBar
+    #navigation-bar.collapse.navbar-collapse
+        ul.nav.nav-pills.nav-stacked
+            li.active
+                a(href="/") Home
+            li
+                a(href="/userManagement") User Management
+						
+#header-container-mobile.hidden-md.hidden-lg.row
+    #header-menu-bar.col-xs-12.col-sm-12
+        .row
+            nav.navbar.navbar-default.col-xs-12.col-sm-12(role="navigation")
+                .navbar-header
+                    button.navbar-toggle(type="button",data-toggle="collapse",data-target="#navigation-bar")
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                +navBar
+.hidden-xs.hidden-sm
+    +navBar

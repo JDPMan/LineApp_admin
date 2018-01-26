@@ -1,0 +1,15 @@
+{
+  "name": "line_app_admin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LU Capstone Refugee Project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongo": "^0.1.0",
+    "pug": "^2.0.0-rc.4"
+  }
+}
