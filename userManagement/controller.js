@@ -1,11 +1,23 @@
 var mongo = require('mongodb');
-exports.getUsers = function(req,res){
-    dbClient.collection('users').find().limit(10).toArray(function(err,users){
-        res.render('userManagement',{users:users});
-    })
+var countries = require('country-data').countries;
+
+exports.newUser = function(req,res){
+    res.render('newUser',{countries:countries.all});
 }
 exports.createUser = function(req,res){
-    var userObj = req.body;
+    var userObj = {};// req.body;
+    for(key in req.body){
+        var splitKey = key.split('-');
+        if(splitKey.length > 1){
+            if(typeof userObj.familyMembers === 'undefined')
+                userObj.familyMembers = [];
+            if (typeof userObj.familyMembers[splitKey[0]] === 'undefined')
+                userObj.familyMembers[splitKey[0]] = {};
+            userObj.familyMembers[splitKey[0]][splitKey[1]] = req.body[key];
+        }else{
+            userObj[key] = req.body[key];
+        }
+    }
     userObj.dateCreated = new Date();
     dbClient.collection('users').insert(userObj,function(err,result){
         // Add error checking here

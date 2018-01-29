@@ -1,11 +1,16 @@
 mixin navBar
     #navigation-bar.collapse.navbar-collapse
         ul.nav.nav-pills.nav-stacked
-            li.active
-                a(href="/") Home
             li
-                a(href="/userManagement") User Management
-						
+                a(href="/") Home
+            li.dropdown
+                a.dropdown-target(data-toggle='dropdown' href='#') User Management
+                    span.caret
+                    ul.dropdown-menu
+                        li
+                            a(href="/userManagement/addUser") Add User
+                        li
+                            a(href="/userManagement/searchUsers") Search Users
 #header-container-mobile.hidden-md.hidden-lg.row
     #header-menu-bar.col-xs-12.col-sm-12
         .row

@@ -12,6 +12,7 @@ var mongo = require('mongodb'),
 // app.use(express.bodyParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/static', express.static(__dirname + '/public'));
 
 dbClient = null; // NOTE: global variable
 
@@ -21,6 +22,6 @@ mongoClient.connect(config.mongodb_url, {}, function (err, db) {
     app.listen(config.port, () => console.log('Line App Admin listening on port 3000'));
 });
 
-// Routes - Wil be broken down into folders in future
+// Routes - Will be broken down into folders in future
 require('./routes')(app);
 require('./userManagement/routes')(app);
