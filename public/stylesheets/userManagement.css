@@ -5,3 +5,7 @@
 .clearFloat{
     clear:both;
 }
+
+.loginSubmit:hover{
+    color: #0F6312 !important;
+}

@@ -12,6 +12,7 @@ var mongo = require('mongodb'),
 // app.use(express.bodyParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.use('/static', express.static(__dirname + '/public'));
 
 dbClient = null; // NOTE: global variable
