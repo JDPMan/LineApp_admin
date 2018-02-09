@@ -41,3 +41,9 @@ exports.searchUser = function(req,res){
         res.status(200).json({users:users,success:true})
     })
 }
+
+exports.getAdmins = function(req,res){
+    dbClient.collection('admins').find({}).toArray(function(err,results){
+        res.render('admin',{admins:results})
+    })
+}

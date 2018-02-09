@@ -1,16 +1,15 @@
 mixin navBar
     #navigation-bar.collapse.navbar-collapse
         ul.nav.nav-pills.nav-stacked
+            li.testing
+                a.navItem(href="/") USERS
             li
-                a(href="/") Home
-            li.dropdown
-                a.dropdown-target(data-toggle='dropdown' href='#') User Management
-                    span.caret
-                    ul.dropdown-menu
-                        li
-                            a(href="/userManagement/addUser") Add User
-                        li
-                            a(href="/userManagement/searchUsers") Search Users
+                a.navItem(href="/") LINE MANAGERS
+            li
+                a.navItem(href="/") LINES
+            li
+                a.navItem(href="/userManagement/admin") ADMIN ACCOUNTS
+            
 #header-container-mobile.hidden-md.hidden-lg.row
     #header-menu-bar.col-xs-12.col-sm-12
         .row

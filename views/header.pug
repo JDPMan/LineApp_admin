@@ -1,0 +1,15 @@
+.row
+    nav.navbar(style="display: table;background-color: #626262; border-radius: 0;color: #FFF; padding-left: 150px; font-size: 20px; width: 100%;margin: 0;")
+        div(style="display:table-cell; vertical-align:middle")
+            div(style="display:table-cell; vertical-align:middle")
+                a(href="/" style="color: #FFF")
+                    span(style="font-weight:600;") CHECK-IN &nbsp;
+                span(style="font-weight:200") ADMINISTRATION ASSISTANT
+        div(style="display:table-cell; vertical-align:middle;text-align:right; padding-right: 15px;")
+            -if(typeof user !== 'undefined')
+                p(style="margin:0") #{user.firstName + " " + user.lastName} &nbsp;
+                    a(href="/logout")
+                        span.logout [logout]
+            -else
+                a(href="/login")
+                    span.login Login

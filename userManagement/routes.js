@@ -8,4 +8,6 @@ module.exports = function (app) {
         res.render('searchUsers')
     })
     app.get('/searchUser',userServices.searchUser);
+
+    app.get('/userManagement/admin',userServices.getAdmins);
 }

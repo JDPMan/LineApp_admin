@@ -5,11 +5,12 @@ block content
         .loginHeaderText(style="padding: 30px; line-height: 18px;")
             p(style="text-align: center; font-size: 22px; font-weight: 800") CHECK-IN
             p(style="text-align: center; font-size: 22px; font-weight: 800") Admin Login
-        form#loginForm(action="/" style="padding: 20px 40px 0 40px")
+            
+        form#loginForm(action="/login" method="post" style="padding: 20px 40px 0 40px")
             label(style="display: inline-block; padding-bottom: 10px;") username
-            input(type="text" style="display: block; width: 100%; margin-bottom: 15px;")
+            input(type="text" name="username" style="display: block; width: 100%; margin-bottom: 15px;")
             label(style="display: inline-block; padding-bottom: 10px;") password
-            input(type="text" style="display: block; width: 100%; margin-bottom: 15px;")
+            input(type="password" name="password" style="display: block; width: 100%; margin-bottom: 15px;")
             span.loginSubmit.glyphicon.glyphicon-arrow-right(style="color: #0F7F12; float: right; font-size: 40px; margin-top: 20px")
     
     script.

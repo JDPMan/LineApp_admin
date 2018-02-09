@@ -1,0 +1,36 @@
+extends layout
+
+block content
+    .adminContainer
+        p.headerText ADD/CHANGE ADMIN
+        .newAdmin
+            form#newAdminForm(action="/submitUser")
+                .fieldContainer
+                    label FIRST NAME
+                    input(type="text" placeholder="First Name")
+                .fieldContainer
+                    label LAST NAME
+                    input(type="text" placeholder="Last Name")
+                .fieldContainer
+                    label USERNAME
+                    input(type="text" placeholder="Username")
+                .fieldContainer
+                    label PASSWORD
+                    input(type="password" placeholder="Password")
+                .clearFloat
+        
+        p.headerText ADMINISTRATORS
+        .administratorsList
+            each admin in admins
+                -var dateStr = "NA"
+                -if(typeof admin.dateCreated !== 'undefined')
+                    -var year = admin.dateCreated.getFullYear()
+                    -var month = admin.dateCreated.getMonth()
+                    -var date = admin.dateCreated.getDate()
+                    -dateStr = month + "/" + date + "/" + year
+                .listAdmin
+                    p.strong=admin.firstName
+                    p.strong=admin.lastName
+                    p=admin._id
+                    p Created: #{dateStr}
+                    .clearFloat
