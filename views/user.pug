@@ -1,0 +1,121 @@
+//- CAN PROBABLY DELETE THIS FILE
+
+extends layout
+
+block content
+    .userContainer
+        p.headerText ADD/CHANGE USER
+        .newUser
+            form#newUserForm(action="/submit")
+                .fieldContainer
+                    label FIRST NAME
+                    input(type="text" placeholder="First Name" name="firstName")
+                .fieldContainer
+                    label LAST NAME
+                    input(type="text" placeholder="Last Name" name="lastName")
+                .fieldContainer
+                    label Country
+                    select(type="text" placeholder="Country" name="country")
+                        option(value="") - Country -
+                        each country in countries
+                            option(val=country) #{country.name}
+                .fieldContainer
+                    label Language(s)
+                    input(type="text" placeholder="Language(s)" name="languages")
+                .fieldContainer
+                    label DATE OF BIRTH
+                    input#datepicker(type="text" placeholder="Date of Birth" name="dateOfBirth")
+                .fieldContainer
+                    label Disclaimer Acknowledged
+                    input(type="checkbox" name="disclaimer")
+                .fieldContainer
+                    //- Used for determining which database collection to insert to (users) 
+                    input.hidden(type="text" value="users" name="type")
+                .clearFloat
+        button#formSubmit Submit
+        
+        p.headerText USERS
+        .usersList
+            each user in users
+                -var dateStr = "NA"
+                -if(typeof user.dateCreated !== 'undefined')
+                    -var year = user.dateCreated.getFullYear()
+                    -var month = user.dateCreated.getMonth()
+                    -var date = user.dateCreated.getDate()
+                    -dateStr = month + "/" + date + "/" + year
+                .listUser
+                    .leftContainer
+                        p.strong.firstName=user.firstName
+                        p.strong.lastName=user.lastName
+                        p.country=user.country
+                        p.languages=user.languages
+                        p.dateOfBirth DOB: #{user.dateOfBirth}
+                        p.dateCreated Created: #{dateStr}
+                        p.hidden.userID=user._id
+                    .rightContainer
+                        button.deleteUser x
+                    .clearFloat
+        
+        .userTemplate.listUser.hidden
+            .leftContainer
+                p.strong.firstName
+                p.strong.lastName
+                p.country
+                p.languages
+                p.dateOfBirth
+                p.dateCreated
+                p.hidden.userID
+            .rightContainer
+                button.deleteUser x
+            .clearFloat
+
+    script(type='text/javascript').
+        $(function(){
+            $('#datepicker').datetimepicker({ //documentation: http://xdsoft.net/jqplugins/datetimepicker/
+                format:'m/d/Y',
+                timepicker:false,
+                closeOnDateSelect:true,
+            });
+        });
+        $('#formSubmit').on('click',function(){
+            var data = $('form#newUserForm').serialize();
+            debugger;
+            $.ajax({
+                type:"POST",
+                url:"/userManagement/submit",
+                data:data,
+                success:function(data){
+                    // Add failure prompt
+                    toastr.success("User has been successfully added!")
+                    debugger;
+                    appendToList(data.data);
+                },
+                dataType:"json"
+            })
+        })
+
+        function appendToList(user){
+            var $newUser = $('.userTemplate').clone().removeClass('userTemplate hidden')
+            for(key in user){
+                $newUser.find('.'+key).text(user[key])
+            }
+
+            $('.usersList').append($newUser)
+        }
+
+        $('.deleteUser').on('click',function(){
+            if(confirm("Are you sure you want to delete this user?")){
+                var id = $(this).parent().parent().find('.userID').text();
+                $(this).parent().parent().remove()
+                var data = {_id: id, collection: "users"};
+                $.ajax({
+                    type:"POST",
+                    url:"/userManagement/deleteRecord",
+                    data:data,
+                    success:function(data){
+                        toastr.success("User has been successfully deleted.")
+                    },
+                    dataType:"json"
+                })
+            }
+        })

@@ -1,0 +1,41 @@
+extends layout
+
+block content
+    .userContainer
+        p.headerText SEARCH RESULTS - #{type}
+
+        .usersList
+            each item in results
+                -var dateStr = "NA"
+                -if(typeof item.dateCreated !== 'undefined')
+                    -var year = item.dateCreated.getFullYear()
+                    -var month = item.dateCreated.getMonth() + 1
+                    -var date = item.dateCreated.getDate()
+                    -dateStr = month + "/" + date + "/" + year
+                .listUser
+                    p.strong.firstName=item.firstName
+                    p.strong.lastName=item.lastName
+                    p._id=item._id
+                    p.dateCreated Created: #{dateStr}
+                    span.deleteItem(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                    .clearFloat
+
+    script.
+        var type = !{JSON.stringify(type)}
+        var collection = !{JSON.stringify(collection)}
+        $('.deleteItem').on('click',function(){
+            if(confirm("Are you sure you want to delete this " + type + "?")){
+                var id = $(this).parent().find('._id').text();
+                $(this).parent().remove()
+                var data = {_id: id, collection: collection};
+                $.ajax({
+                    type:"POST",
+                    url:"/userManagement/deleteRecord",
+                    data:data,
+                    success:function(data){
+                        toastr.success(type + " has been successfully deleted.")
+                    },
+                    dataType:"json"
+                })
+            }
+        })

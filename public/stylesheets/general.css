@@ -37,8 +37,13 @@ nav a:hover{
     text-decoration: none;
 }
 .logout:hover, .login:hover{
-    text-decoration:none
+    text-decoration:none !important;
+    cursor: pointer;
 }
 .logout, .login{
-    color: #FFF
+    color: #FFF !important;
+}
+
+button#searchModalButton{
+    margin-right: 20px;
 }

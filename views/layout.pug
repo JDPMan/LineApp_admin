@@ -16,6 +16,9 @@ html
 		script(src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js")
 			
 		script(src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.min.js")
+
+		script(src="/static/scripts/jquery.datetimepicker.js",type="text/javascript")
+		link(rel='stylesheet',href='/static/stylesheets/jquery.datetimepicker.css')
 		script.
 			toastr.options = {
 				"debug": false,
@@ -35,12 +38,41 @@ html
 					include navigation
 				.col-lg-10.col-md-9.col-sm-9(style="padding:0 0 25px 0;")
 					block content
-	//- body
-	//- 	include login
-		//- div(style='padding: 0 15px;')
-		//- 	div(class='row')
-		//- 		.col-lg-2.col-md-3.col-sm-3
-		//- 			include navigation
-		//- 		.col-lg-10.col-md-9.col-sm-9(style="padding-bottom:25px; margin-bottom:150px")
-		//- 			block content
-		//- block footer
+		.modal.fade#searchModal(tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true")
+			.modal-dialog(role="document")
+				.modal-content
+					.modal-header(style='display:flow-root')
+						h5.modal-title#searchModalLabel(style="float:left") Search
+						button.close(type="button" data-dismiss="modal" aria-label="Close" style="float:right")
+							span(aria-hidden="true") &times;
+					.modal-body
+						form#searchForm
+							.form-group
+								label.col-form-label(for="type") Type
+								select.form-control#type(type="text" name="type")
+									option(value="") - Please Select a Type -
+									option(value="users") Users
+									option(value="lineManagers") Line Managers
+									option(value="admins") Admins
+
+							.form-group
+								label.col-form-label(for="firstName") First Name
+								input.form-control#firstName(type="text" placeholder="First Name" name="firstName")
+							.form-group
+								label.col-form-label(for="lastName") Last Name
+								input.form-control#lastName(type="text" placeholder="Last Name" name="lastName")
+							.form-group
+								label.col-form-label(for="userID") User ID
+								input.form-control#userID(type="text" placeholder="User ID" name="_id")
+						
+					.modal-footer
+						button.btn.btn-secondary(type="button" data-dismiss="modal") Close
+						button.btn.btn-primary#search(type="button") Search
+
+	script.
+		$('#search').on('click',function(){
+			// TO-DO: check if type was selected. Display error otherwise
+			var data = $('form#searchForm').serialize();
+			window.location.replace(window.location.origin + '/userManagement/search?'+data);
+		})
+		

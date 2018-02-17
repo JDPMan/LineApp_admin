@@ -9,7 +9,7 @@
 .loginSubmit:hover{
     color: #0F6312 !important;
 }
-.adminContainer{
+.userContainer{
     padding: 20px 50px;
 }
 .headerText{
@@ -17,31 +17,31 @@
     font-weight: 500;
     margin-top: 20px;
 }
-.newAdmin{
+.newUser{
     background-color: #E6E6E6;
     border: 1px solid #000;
     border-radius: 5px;
 }
 
-#newAdminForm{
+#newUserForm{
     height: auto;
 }
 
-#newAdminForm label, #newAdminForm input{
+#newUserForm label, #newUserForm input{
     display: block;
 }
-#newAdminForm .fieldContainer{
+#newUserForm .fieldContainer{
     float: left;
     padding: 15px;
 }
 
-.listAdmin{
+.listUser{
     background-color: #E6E6E6;
     border: 1px solid #000;
     border-radius: 5px;
     margin-bottom: 15px;
 }
-.listAdmin p{
+.listUser p{
     display: block;
     float: left;
     padding: 15px 25px;
