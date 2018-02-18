@@ -8,8 +8,6 @@ var crypto = require('crypto');
 
 exports.submitUser = function(req,res){
     var userObj = {};
-    var collection = '';
-    var encryptPassword = false;
     for (key in req.body) {
         var splitKey = key.split('-');
         if (splitKey.length > 1) { // Family Members
@@ -19,9 +17,7 @@ exports.submitUser = function(req,res){
                 userObj.familyMembers[splitKey[0]] = {};
             userObj.familyMembers[splitKey[0]][splitKey[1]] = req.body[key];
         } else { // Everything else
-            if(key === 'type')
-                collection = req.body[key]
-            else if(key === 'dateOfBirth')
+            if(key === 'dateOfBirth' && req.body[key] !== "")
                 userObj[key] = new Date(req.body[key]);
             else if(key === 'password'){
                 encryptPassword = true;
@@ -30,14 +26,9 @@ exports.submitUser = function(req,res){
                 userObj[key] = req.body[key];
         }
     }
-    if(encryptPassword){
-        userObj.password = saltAndHash(req.body.password,function(){
-
-        })
-    }
     
     userObj.dateCreated = new Date();
-    dbClient.collection(collection).insert(userObj, function (err, result) {
+    dbClient.collection('users').insert(userObj, function (err, result) {
         // Add error checking here
         res.status(200).json({ success: true, user: result.ops[0]})
     })
