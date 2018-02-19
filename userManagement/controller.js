@@ -63,6 +63,14 @@ exports.submitLM = function (req, res) {
         })
     })
 }
+exports.submitLine = function (req, res) {
+    var lineObj = req.body
+    lineObj.dateCreated = new Date();
+    dbClient.collection('lines').insert(lineObj, function (err, result) {
+        // Add error checking here
+        res.status(200).json({ success: true, line: result.ops[0] })
+    })
+}
 
 exports.deleteRecord = function(req,res){
     var _id = mongo.ObjectID(req.body._id);
@@ -109,6 +117,12 @@ exports.getLineManagers = function (req, res) {
 exports.getUsers = function (req, res) {
     dbClient.collection('users').find({}).limit(20).toArray(function (err, results) {
         res.render('user', { users: results, countries: countries.all, user: req.user})
+    })
+}
+
+exports.getLines = function (req, res) {
+    dbClient.collection('lines').find({}).limit(20).toArray(function (err, results) {
+        res.render('line', { lines: results, user: req.user })
     })
 }
 

@@ -1,0 +1,106 @@
+extends layout
+
+block content
+    .userContainer
+        p.headerText ADD/CHANGE LINE
+        .newUser
+            form#newUserForm(action="/submitLine")
+                .fieldContainer
+                    label LINE NAME
+                    input(type="text" placeholder="Line Name" name="name")
+                .fieldContainer
+                    label RESOURCE
+                    input(type="text" placeholder="Resource" name="resource")
+                .fieldContainer
+                    label CAPACITY
+                    input(type="text" placeholder="Capacity" name="capacity")
+                .fieldContainer
+                    label OPEN/CLOSE
+                    input(type="text" placeholder="Open - Close" name="openCloseTime")
+                .clearFloat
+        button#submitLine.hidden(style="float:right;margin-top:10px;background-color:#9E9E9E") Submit
+        
+        p.headerText LINES
+        .usersList
+            each line in lines
+                -var dateStr = "NA"
+                -if(typeof line.dateCreated !== 'undefined')
+                    -var year = line.dateCreated.getFullYear()
+                    -var month = line.dateCreated.getMonth() + 1
+                    -var date = line.dateCreated.getDate()
+                    -dateStr = month + "/" + date + "/" + year
+                .listUser
+                    p.strong.name=line.name
+                    p.strong.resource=line.name
+                    p.strong.capacity Cap: #{line.capacity}
+                    p._id=line._id
+                    p.dateCreated Created: #{dateStr}
+                    span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                    .clearFloat
+
+
+    .lineTemplate.listUser.hidden
+        p.strong.name
+        p.strong.resource
+        p.strong.capacity
+        p._id
+        p.dateCreated
+        span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+        .clearFloat
+    
+    script.
+        $('#submitLine').on('click',function(){
+            var data = $('form#newUserForm').serialize();
+            $.ajax({
+                type:"POST",
+                url:"/userManagement/submitLine",
+                data:data,
+                success:function(data){
+                    // Add failure prompt
+                    toastr.success("User has been successfully added!")
+                    appendToList(data.line);
+                },
+                dataType:"json"
+            })
+        })
+
+        $('input').on('change keypress',function(){
+            $('#submitLine').removeClass('hidden');
+        })
+
+        $('.deleteLine').on('click',function(){
+            if(confirm("Are you sure you want to delete this line?")){
+                var id = $(this).parent().find('._id').text();
+                $(this).parent().remove()
+                var data = {_id: id, collection: "lines"};
+                $.ajax({
+                    type:"POST",
+                    url:"/userManagement/deleteRecord",
+                    data:data,
+                    success:function(data){
+                        toastr.success("Line has been successfully deleted.")
+                    },
+                    dataType:"json"
+                })
+            }
+        })
+
+        function appendToList(line){
+            var $newLine = $('.lineTemplate').clone().removeClass('lineTemplate hidden')
+            for(key in line){
+                if(key === "dateCreated"){
+                    var date = new Date(line.dateCreated);
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var date = date.getDate();
+                    dateStr = month + "/" + date + "/" + year
+                    $newLine.find('.'+key).text("Created: " + dateStr)
+                }else if(key === 'capacity'){
+                    $newLine.find('.'+key).text("Cap: " + line[key]);
+                }else{
+                    $newLine.find('.'+key).text(line[key]);
+                }
+            }
+
+            $('.usersList').append($newLine)
+        }

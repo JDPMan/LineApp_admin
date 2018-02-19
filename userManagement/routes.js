@@ -9,9 +9,10 @@ module.exports = function (app) {
     // })
     // app.get('/searchUser',userServices.searchUser);
 
-    app.post('/userManagement/submitUser',userServices.submitUser)
-    app.post('/userManagement/submitAdmin', userServices.submitAdmin)
-    app.post('/userManagement/submitLM', userServices.submitLM)
+    app.post('/userManagement/submitUser',userServices.submitUser);
+    app.post('/userManagement/submitAdmin', userServices.submitAdmin);
+    app.post('/userManagement/submitLM', userServices.submitLM);
+    app.post('/userManagement/submitLine',userServices.submitLine);
     app.post('/userManagement/deleteRecord', userServices.deleteRecord);
 
     app.get('/userManagement/search',userServices.search)
@@ -20,5 +21,6 @@ module.exports = function (app) {
     app.get('/userManagement/admins',userServices.getAdmins);
     app.get('/userManagement/lineManagers', userServices.getLineManagers);
     app.get('/userManagement/users', userServices.getUsers);
+    app.get('/userManagement/lines',userServices.getLines);
 
 }
