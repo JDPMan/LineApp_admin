@@ -141,14 +141,6 @@ exports.getRecord = function(req,res){
 }
 exports.saveRecord = function(req,res){
     var record = {};
-    // var record = req.body;
-    // record.dateCreated = new Date(record.dateCreated);
-    // if(typeof record.dateCreated !== 'undefined')
-    //     record.dateCreated = new Date(record.dateCreated);
-    // record._id = mongo.ObjectId(record._id);
-
-
-
     for (key in req.body) {
         var splitKey = key.split('-');
         if (splitKey.length > 1) { // Family Members

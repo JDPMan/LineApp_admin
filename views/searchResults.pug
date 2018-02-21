@@ -12,13 +12,14 @@ block content
                     -var month = item.dateCreated.getMonth() + 1
                     -var date = item.dateCreated.getDate()
                     -dateStr = month + "/" + date + "/" + year
-                .listUser
-                    p.strong.firstName=item.firstName
-                    p.strong.lastName=item.lastName
-                    p._id=item._id
-                    p.dateCreated Created: #{dateStr}
-                    span.deleteItem(style="float:right; font-size: 30px; padding-right: 20px;") &times;
-                    .clearFloat
+                a(href="/userManagement/editRecord/" + item._id + '?type=' + item.type)
+                    .listUser
+                        p.strong.firstName=item.firstName
+                        p.strong.lastName=item.lastName
+                        p._id(value=item._id)=item._id
+                        p.dateCreated Created: #{dateStr}
+                        span.deleteItem(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                        .clearFloat
 
     script.
         var type = !{JSON.stringify(type)}

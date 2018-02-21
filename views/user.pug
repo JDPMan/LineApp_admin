@@ -26,6 +26,15 @@ block content
                     label DATE OF BIRTH
                     input#datepicker(type="text" placeholder="Date of Birth" name="dateOfBirth")
                 .fieldContainer
+                    label CASE NUMBER
+                    input(type="text" placeholder="Case Number" name='caseNumber')
+                .fieldContainer
+                    label HOUSING LOCATION
+                    input(type="text" placeholder="Housing Location" name="housingLocation")
+                .fieldContainer
+                    label SPECIAL NEEDS
+                    input(type="text" placeholder="Special Needs" name="specialNeeds")
+                .fieldContainer
                     label DISCLAIMER ACKNOWLEDGED
                     input(type="checkbox" name="disclaimer")
                 .fieldContainer
@@ -65,6 +74,9 @@ block content
                         p.languages=user.languages
                         p.dateOfBirth DOB: #{dateStrDOB}
                         p.dateCreated Created: #{dateStrDC}
+                        p.caseNumber Case #: #{user.caseNumber}
+                        p.housingLocation Housing Location: #{user.housingLocation}
+                        p.specialNeeds Special Needs: #{user.specialNeeds}
                         p.hidden._id=user._id
                         span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
                         .clearFloat
@@ -90,6 +102,9 @@ block content
                     label DATE OF BIRTH
                     input#datepicker(type="text" placeholder="Date of Birth" name="dateOfBirth")
                 .fieldContainer
+                    label SPECIAL NEEDS
+                    input(type="text" placeholder="Special Needs" name="specialNeeds")
+                .fieldContainer
                     label DISCLAIMER ACKNOWLEDGED
                     input(type="checkbox" name="disclaimer")
                 .fieldContainer
@@ -106,6 +121,9 @@ block content
                 p.languages
                 p.dateOfBirth
                 p.dateCreated
+                p.caseNumber
+                p.housingLocation
+                p.specialNeeds
                 p.hidden._id
                 span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
                 .clearFloat

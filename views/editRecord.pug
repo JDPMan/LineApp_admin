@@ -29,7 +29,7 @@ block content
                             label=field
                             input.form-control(type="text" value=value name=field readOnly=readOnly)
                 
-                if typeof record.familMembers !== 'undefined'
+                if typeof record.familyMembers !== 'undefined'
                     each member, index in record.familyMembers
                         h3 Family Member #{index+1}
                         .familyMember(style="padding-left: 30px")

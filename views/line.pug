@@ -105,7 +105,7 @@ block content
                     $newLine.find('.'+key).text(line[key]);
                 }
             }
-            var href='/userManagement/editRecord/' + line._id + '?type' + line.type;
+            var href='/userManagement/editRecord/' + line._id + '?type=' + line.type;
             $newLine.attr('href',href);
             $('.usersList').append($newLine)
         }
