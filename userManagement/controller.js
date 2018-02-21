@@ -165,6 +165,12 @@ exports.saveRecord = function(req,res){
     })
 }
 
+exports.retrieveUsers = function(req,res){
+    dbClient.collection('users').find({}).toArray(function(err,results){
+        res.json(results);
+    })
+}
+
 var generateSalt = function () {
     var set = '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ';
     var salt = '';
