@@ -1,115 +1,115 @@
-//- CAN PROBABLY DELETE THIS FILE
+//- //- CAN PROBABLY DELETE THIS FILE
 
-extends ./layout
-block head
-    link(rel='stylesheet',href='/static/stylesheets/userManagement.css')
-    script(src="/static/scripts/jquery.datetimepicker.js",type="text/javascript")
-    link(rel='stylesheet',href='/static/stylesheets/jquery.datetimepicker.css')
-    script(type='text/javascript').
-        $(function(){
-            $('#datepicker').datetimepicker({ //documentation: http://xdsoft.net/jqplugins/datetimepicker/
-                format:'m/d/Y',
-                timepicker:false,
-                closeOnDateSelect:true,
-                //- onChangeDateTime: function(selectedDate,$target){
-                //-     if(selectedDate == null) return;
-                //-     dateStr = formatDate(selectedDate);
-                //- }
-            });
-        });
-        function formatDate(_date){
-            var month = (''+(_date.getMonth()+1)).replace(/(^\d$)/,'0$1');
-            var day = (''+_date.getDate()).replace(/(^\d$)/,'0$1');
-            return _date.getFullYear() + '-' + month + '-' + day;
-        }
+//- extends ./layout
+//- block head
+//-     link(rel='stylesheet',href='/static/stylesheets/userManagement.css')
+//-     script(src="/static/scripts/jquery.datetimepicker.js",type="text/javascript")
+//-     link(rel='stylesheet',href='/static/stylesheets/jquery.datetimepicker.css')
+//-     script(type='text/javascript').
+//-         $(function(){
+//-             $('#datepicker').datetimepicker({ //documentation: http://xdsoft.net/jqplugins/datetimepicker/
+//-                 format:'m/d/Y',
+//-                 timepicker:false,
+//-                 closeOnDateSelect:true,
+//-                 //- onChangeDateTime: function(selectedDate,$target){
+//-                 //-     if(selectedDate == null) return;
+//-                 //-     dateStr = formatDate(selectedDate);
+//-                 //- }
+//-             });
+//-         });
+//-         function formatDate(_date){
+//-             var month = (''+(_date.getMonth()+1)).replace(/(^\d$)/,'0$1');
+//-             var day = (''+_date.getDate()).replace(/(^\d$)/,'0$1');
+//-             return _date.getFullYear() + '-' + month + '-' + day;
+//-         }
 
-block content
-    h3 Create New User
+//- block content
+//-     h3 Create New User
 
     
-    #newUserForm
-        form#newUser.form-group
-            .form-group
-                label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="First Name") First Name
-                .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                    input.formSpacing.firstName.form-control(placeholder="First Name" name="firstName")
-            .form-group
-                label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Last Name") Last Name
-                .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                    input.formSpacing.lastName.form-control(placeholder="Last Name" name="lastName")
-            .form-group
-                label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Country") Country
-                .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                    select.formSpacing.country.form-control(name="country")
-                        option(value="") - Country of Origin -
-                        each country in countries
-                            option(value=country.name) #{country.name}
-            .form-group
-                label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Language") Language
-                .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                    input.language.formSpacing.form-control(placeholder="Language" name="language")
-            .form-group
-                label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Date of Birth") Date of Birth
-                .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                    input#datepicker.formSpacing.form-control.dateOfBirth(type="text" placeholder="Date of Birth")
-            .form-group
-                label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Age") Age
-                .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                    input.age.formSpacing.form-control(placeholder="Age" name="age")
-            .familyMembersContainer
-                label Family Members
-        .btn-group.form-group
-            button#addFamily.addFamilyButton.btn.btn-success.btn-lg
-                span.glyphicon.glyphicon-user
-                | &nbsp;Add Family Member
-        .clearFloat
-        .btn-group(style="margin-bottom:50px")
-            button#submitNewUser.newUserButton.btn.btn-success.btn-lg
-                span.glyphicon.glyphicon-ok
-                | &nbsp;Submit
+//-     #newUserForm
+//-         form#newUser.form-group
+//-             .form-group
+//-                 label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="First Name") First Name
+//-                 .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                     input.formSpacing.firstName.form-control(placeholder="First Name" name="firstName")
+//-             .form-group
+//-                 label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Last Name") Last Name
+//-                 .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                     input.formSpacing.lastName.form-control(placeholder="Last Name" name="lastName")
+//-             .form-group
+//-                 label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Country") Country
+//-                 .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                     select.formSpacing.country.form-control(name="country")
+//-                         option(value="") - Country of Origin -
+//-                         each country in countries
+//-                             option(value=country.name) #{country.name}
+//-             .form-group
+//-                 label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Language") Language
+//-                 .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                     input.language.formSpacing.form-control(placeholder="Language" name="language")
+//-             .form-group
+//-                 label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Date of Birth") Date of Birth
+//-                 .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                     input#datepicker.formSpacing.form-control.dateOfBirth(type="text" placeholder="Date of Birth")
+//-             .form-group
+//-                 label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Age") Age
+//-                 .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                     input.age.formSpacing.form-control(placeholder="Age" name="age")
+//-             .familyMembersContainer
+//-                 label Family Members
+//-         .btn-group.form-group
+//-             button#addFamily.addFamilyButton.btn.btn-success.btn-lg
+//-                 span.glyphicon.glyphicon-user
+//-                 | &nbsp;Add Family Member
+//-         .clearFloat
+//-         .btn-group(style="margin-bottom:50px")
+//-             button#submitNewUser.newUserButton.btn.btn-success.btn-lg
+//-                 span.glyphicon.glyphicon-ok
+//-                 | &nbsp;Submit
 
-    .familyTemplate.hidden(style="margin-left: 25px;")
-        .clearFloat
-            hr
-        .form-group
-            label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="First Name") First Name
-            .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                input.familyFirstName.formSpacing.form-control(placeholder="First Name" name="firstName")
-        .form-group
-            label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Last Name") Last Name
-            .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                input.familyLastName.formSpacing.form-control(placeholder="Last Name" name="lastName")
-        .form-group
-            label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Relation") Relation
-            .col-sm-9.col-md-9.col-lg-10.col-xl-10
-                input.familyRelation.formSpacing.form-control(placeholder="Relation" name="relation")
-        .form-group
-            label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Age") Age
-            .col-sm-9.col-md-9.col-lg-10.col-xl-10(style="margin-bottom:15px")
-                input.familyAge.formSpacing.form-control(placeholder="Age" name="age")
+//-     .familyTemplate.hidden(style="margin-left: 25px;")
+//-         .clearFloat
+//-             hr
+//-         .form-group
+//-             label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="First Name") First Name
+//-             .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                 input.familyFirstName.formSpacing.form-control(placeholder="First Name" name="firstName")
+//-         .form-group
+//-             label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Last Name") Last Name
+//-             .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                 input.familyLastName.formSpacing.form-control(placeholder="Last Name" name="lastName")
+//-         .form-group
+//-             label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Relation") Relation
+//-             .col-sm-9.col-md-9.col-lg-10.col-xl-10
+//-                 input.familyRelation.formSpacing.form-control(placeholder="Relation" name="relation")
+//-         .form-group
+//-             label.formSpacing.col-sm-3.col-md-3.col-lg-2.col-xl-2.col-form-label(for="Age") Age
+//-             .col-sm-9.col-md-9.col-lg-10.col-xl-10(style="margin-bottom:15px")
+//-                 input.familyAge.formSpacing.form-control(placeholder="Age" name="age")
 
-    script.
-        $('#addFamily').on('click',function(){
-            var $newFamilyMember = $('.familyTemplate').clone().removeClass('hidden familyTemplate').addClass('familyMember');
-            var famNum = $('.familyMember').length;
-            debugger;
-            $newFamilyMember.find('input').each(function(input){
-                var indexedName = '' + famNum + '-' + $(this).attr('name');
-                $(this).attr('name',indexedName)
-            })
-            $('.familyMembersContainer').append($newFamilyMember);
-        })
-        $('#submitNewUser').on('click',function(){
-            debugger;
-            var newUserData = $('form#newUser').serialize();
-            $.ajax({
-                type:"POST",
-                url:"/createUser",
-                data:newUserData,
-                success:function(data){
-                    // Add failure prompt
-                    toastr.success("User has been successfully added!")
-                },
-                dataType:"json"
-            })
-        })
+//-     script.
+//-         $('#addFamily').on('click',function(){
+//-             var $newFamilyMember = $('.familyTemplate').clone().removeClass('hidden familyTemplate').addClass('familyMember');
+//-             var famNum = $('.familyMember').length;
+//-             debugger;
+//-             $newFamilyMember.find('input').each(function(input){
+//-                 var indexedName = '' + famNum + '-' + $(this).attr('name');
+//-                 $(this).attr('name',indexedName)
+//-             })
+//-             $('.familyMembersContainer').append($newFamilyMember);
+//-         })
+//-         $('#submitNewUser').on('click',function(){
+//-             debugger;
+//-             var newUserData = $('form#newUser').serialize();
+//-             $.ajax({
+//-                 type:"POST",
+//-                 url:"/createUser",
+//-                 data:newUserData,
+//-                 success:function(data){
+//-                     // Add failure prompt
+//-                     toastr.success("User has been successfully added!")
+//-                 },
+//-                 dataType:"json"
+//-             })
+//-         })

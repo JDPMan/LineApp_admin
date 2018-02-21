@@ -17,6 +17,8 @@ block content
                 .fieldContainer
                     label OPEN/CLOSE
                     input(type="text" placeholder="Open - Close" name="openCloseTime")
+                .fieldContainer.hidden
+                    input(type="text" name="type" value="line")
                 .clearFloat
         button#submitLine.hidden(style="float:right;margin-top:10px;background-color:#9E9E9E") Submit
         
@@ -29,24 +31,25 @@ block content
                     -var month = line.dateCreated.getMonth() + 1
                     -var date = line.dateCreated.getDate()
                     -dateStr = month + "/" + date + "/" + year
-                .listUser
-                    p.strong.name=line.name
-                    p.strong.resource=line.name
-                    p.strong.capacity Cap: #{line.capacity}
-                    p._id=line._id
-                    p.dateCreated Created: #{dateStr}
-                    span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
-                    .clearFloat
+                a(href="/userManagement/editRecord/" + line._id + '?type=' + line.type)
+                    .listUser
+                        p.strong.name=line.name
+                        p.strong.resource=line.resource
+                        p.strong.capacity Cap: #{line.capacity}
+                        p._id=line._id
+                        p.dateCreated Created: #{dateStr}
+                        span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                        .clearFloat
 
-
-    .lineTemplate.listUser.hidden
-        p.strong.name
-        p.strong.resource
-        p.strong.capacity
-        p._id
-        p.dateCreated
-        span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
-        .clearFloat
+    a.lineTemplate.hidden
+        .listUser
+            p.strong.name
+            p.strong.resource
+            p.strong.capacity
+            p._id
+            p.dateCreated
+            span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+            .clearFloat
     
     script.
         $('#submitLine').on('click',function(){
@@ -68,7 +71,8 @@ block content
             $('#submitLine').removeClass('hidden');
         })
 
-        $('.deleteLine').on('click',function(){
+        $('.deleteLine').on('click',function(e){
+            e.preventDefault();
             if(confirm("Are you sure you want to delete this line?")){
                 var id = $(this).parent().find('._id').text();
                 $(this).parent().remove()
@@ -101,6 +105,7 @@ block content
                     $newLine.find('.'+key).text(line[key]);
                 }
             }
-
+            var href='/userManagement/editRecord/' + line._id + '?type' + line.type;
+            $newLine.attr('href',href);
             $('.usersList').append($newLine)
         }

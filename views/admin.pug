@@ -17,6 +17,8 @@ block content
                 .fieldContainer
                     label PASSWORD
                     input(type="password" placeholder="Password" name="password")
+                .fieldContainer.hidden
+                    input(type="text" name="type" value="admin")
                 .clearFloat
         button#submitAdmin.hidden(style="float:right;margin-top:10px;background-color:#9E9E9E") Submit
         
@@ -29,22 +31,24 @@ block content
                     -var month = admin.dateCreated.getMonth() + 1
                     -var date = admin.dateCreated.getDate()
                     -dateStr = month + "/" + date + "/" + year
-                .listUser
-                    p.strong.firstName=admin.firstName
-                    p.strong.lastName=admin.lastName
-                    p._id=admin._id
-                    p.dateCreated Created: #{dateStr}
-                    span.deleteAdmin(style="float:right; font-size: 30px; padding-right: 20px;") &times;
-                    .clearFloat
+                a(href="/userManagement/editRecord/"+admin._id+'?type='+admin.type)
+                    .listUser
+                        p.strong.firstName=admin.firstName
+                        p.strong.lastName=admin.lastName
+                        p._id=admin._id
+                        p.dateCreated Created: #{dateStr}
+                        span.deleteAdmin(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                        .clearFloat
 
 
-    .adminTemplate.listUser.hidden
-        p.strong.firstName
-        p.strong.lastName
-        p._id
-        p.dateCreated
-        span.deleteAdmin(style="float:right; font-size: 30px; padding-right: 20px;") &times;
-        .clearFloat
+    a.adminTemplate.hidden
+        .listUser
+            p.strong.firstName
+            p.strong.lastName
+            p._id
+            p.dateCreated
+            span.deleteAdmin(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+            .clearFloat
     
     script.
         $('#submitAdmin').on('click',function(){
@@ -66,7 +70,8 @@ block content
             $('#submitAdmin').removeClass('hidden');
         })
 
-        $('.deleteAdmin').on('click',function(){
+        $('.deleteAdmin').on('click',function(e){
+            e.preventDefault();
             if(confirm("Are you sure you want to delete this admin?")){
                 var id = $(this).parent().find('._id').text();
                 $(this).parent().remove()
@@ -85,9 +90,9 @@ block content
 
         function appendToList(admin){
             var $newAdmin = $('.adminTemplate').clone().removeClass('adminTemplate hidden')
+            debugger;
             for(key in admin){
                 if(key === "dateCreated"){
-                    debugger;
                     var date = new Date(admin.dateCreated);
                     var year = date.getFullYear();
                     var month = date.getMonth() + 1;
@@ -97,6 +102,8 @@ block content
                 }else
                     $newAdmin.find('.'+key).text(admin[key])
             }
+            var href = '/userManagement/editRecord/' + admin._id + '?type=' + admin.type
+            $newAdmin.attr('href',href)
 
             $('.usersList').append($newAdmin)
         }

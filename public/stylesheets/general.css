@@ -16,7 +16,7 @@ nav.navbar{
     overflow: hidden;
     position: fixed;
     top: 0;
-    z-index: 2;
+    z-index: 3;
 }
 
 a.navItem{

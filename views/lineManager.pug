@@ -17,6 +17,8 @@ block content
                 .fieldContainer
                     label PASSWORD
                     input(type="password" placeholder="Password" name="password")
+                .fieldContainer.hidden
+                    input(type="text" name="type" value="lineManager")
                 .clearFloat
         button#submitLM.hidden(style="float:right;margin-top:10px;background-color:#9E9E9E") Submit
         
@@ -29,22 +31,24 @@ block content
                     -var month = lm.dateCreated.getMonth()
                     -var date = lm.dateCreated.getDate()
                     -dateStr = month + "/" + date + "/" + year
-                .listUser
-                    p.strong.firstName=lm.firstName
-                    p.strong.lastName=lm.lastName
-                    p._id=lm._id
-                    p.dateCreated Created: #{dateStr}
-                    span.deleteLM(style="float:right; font-size: 30px; padding-right: 20px;") &times;
-                    .clearFloat
+                a(href="/userManagement/editRecord/"+lm._id+'?type='+lm.type)
+                    .listUser
+                        p.strong.firstName=lm.firstName
+                        p.strong.lastName=lm.lastName
+                        p._id=lm._id
+                        p.dateCreated Created: #{dateStr}
+                        span.deleteLM(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                        .clearFloat
 
 
-    .lmTemplate.listUser.hidden
-        p.strong.firstName
-        p.strong.lastName
-        p._id
-        p.dateCreated
-        span.deleteLM(style="float:right; font-size: 30px; padding-right: 20px;") &times;
-        .clearFloat
+    a.lmTemplate.hidden
+        .listUser
+            p.strong.firstName
+            p.strong.lastName
+            p._id
+            p.dateCreated
+            span.deleteLM(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+            .clearFloat
 
     script.
         $('#submitLM').on('click',function(){
@@ -66,7 +70,8 @@ block content
             $('#submitLM').removeClass('hidden');
         })
 
-        $('.deleteLM').on('click',function(){
+        $('.deleteLM').on('click',function(e){
+            e.preventDefault();
             if(confirm("Are you sure you want to delete this line manager?")){
                 var id = $(this).parent().find('._id').text();
                 $(this).parent().remove()
@@ -96,6 +101,7 @@ block content
                 }else
                     $newLM.find('.'+key).text(lm[key])
             }
-
+            var href = '/userMangement/editRecord/' + lm._id + '?type=' + lm.type
+            $newLM.attr('href',href)
             $('.usersList').append($newLM)
         }

@@ -23,4 +23,7 @@ module.exports = function (app) {
     app.get('/userManagement/users', userServices.getUsers);
     app.get('/userManagement/lines',userServices.getLines);
 
+    app.get('/userManagement/editRecord/*',userServices.getRecord);
+    app.post('/userManagement/saveRecord',userServices.saveRecord);
+
 }

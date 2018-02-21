@@ -45,7 +45,7 @@ exports.submitAdmin = function (req, res) {
         adminObj.password = hash;
 
         adminObj.dateCreated = new Date();
-        dbClient.collection('admins').insert(adminObj, function (err, result) {
+        dbClient.collection('admins').save(adminObj, function (err, result) {
             // Add error checking here
             res.status(200).json({ success: true, admin: result.ops[0] })
         })
@@ -123,6 +123,53 @@ exports.getUsers = function (req, res) {
 exports.getLines = function (req, res) {
     dbClient.collection('lines').find({}).limit(20).toArray(function (err, results) {
         res.render('line', { lines: results, user: req.user })
+    })
+}
+
+exports.getRecord = function(req,res){
+    // debugger;
+    var id = req.url.split('/');
+    id = id[id.length - 1];
+    id = id.split('?')[0]
+    id = mongo.ObjectId(id);
+    var collection = req.query.type + 's';
+    dbClient.collection(collection).find({_id:id}).toArray(function(err,result){
+        // debugger;
+        // Add error checking
+        res.render('editRecord', { record: result[0], countries: countries.all,})
+    })
+}
+exports.saveRecord = function(req,res){
+    var record = {};
+    // var record = req.body;
+    // record.dateCreated = new Date(record.dateCreated);
+    // if(typeof record.dateCreated !== 'undefined')
+    //     record.dateCreated = new Date(record.dateCreated);
+    // record._id = mongo.ObjectId(record._id);
+
+
+
+    for (key in req.body) {
+        var splitKey = key.split('-');
+        if (splitKey.length > 1) { // Family Members
+            if (typeof record.familyMembers === 'undefined')
+                record.familyMembers = [];
+            if (typeof record.familyMembers[splitKey[0]] === 'undefined')
+                record.familyMembers[splitKey[0]] = {};
+            record.familyMembers[splitKey[0]][splitKey[1]] = req.body[key];
+        } else if(key === 'dateCreated' || key === 'dateOfBirth'){
+            record[key] = new Date(req.body[key]);
+        }else{
+            record[key] = req.body[key];
+        }
+    }
+    var collection = record.type + 's';
+    record._id = mongo.ObjectId(record._id)
+
+
+
+    dbClient.collection(collection).save(record,function(err,result){
+        res.status(200).json({success:true})
     })
 }
 

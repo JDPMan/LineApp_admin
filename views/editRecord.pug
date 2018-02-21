@@ -1,0 +1,79 @@
+extends layout
+
+block content
+    .userContainer
+        p.headerText EDIT #{record.type}
+        form#editRecordForm
+            .record
+                each value, field in record
+                    if field === 'familyMembers'
+                        -continue;
+                    -var readOnly = false;
+                    -var hidden = '';
+                    if field === '_id'
+                        -readOnly = true;
+                    if field === 'password' || field == 'type'
+                        -hidden = 'hidden';
+                    if field === 'country'
+                        .input-group.form-spacing
+                            label COUNTRY
+                            select.form-control(type="text" name="country")
+                                option(value="") - Country -
+                                each country in countries
+                                    if country.name === value
+                                        option(value=country.name selected) #{country.name}
+                                    else
+                                        option(value=country.name) #{country.name}
+                    else
+                        .input-group.form-spacing(class=hidden)
+                            label=field
+                            input.form-control(type="text" value=value name=field readOnly=readOnly)
+                
+                if typeof record.familMembers !== 'undefined'
+                    each member, index in record.familyMembers
+                        h3 Family Member #{index+1}
+                        .familyMember(style="padding-left: 30px")
+                            each value, field in member
+                                -var name = '' + index + '-' + field
+                                if field === 'country'
+                                    .input-group.form-spacing
+                                        label COUNTRY
+                                        select.form-control(type="text" name=name)
+                                            option(value="") - Country -
+                                            each country in countries
+                                                if country.name === value
+                                                    option(value=country.name selected) #{country.name}
+                                                else
+                                                    option(value=country.name) #{country.name}
+                                else
+                                    .input-group.form-spacing(class=hidden)
+                                        label=field
+                                        input.form-control(type="text" value=value name=name readOnly=readOnly)
+
+
+        //- Add change password feature
+
+        button#save.hidden Save
+
+
+    script.
+        $('input, select').on('change keypress',function(){
+            $('#save').removeClass('hidden');
+        })
+
+        $('#save').on('click',function(){
+            debugger;
+            var data = $('form#editRecordForm').serialize();
+            $.ajax({
+                    type:"POST",
+                    url:"/userManagement/saveRecord",
+                    data:data,
+                    success:function(data){
+                        debugger;
+                        //Add error checking
+                        toastr.success("Record has been successfully saved.")
+                    },
+                    dataType:"json"
+                })
+        })
+

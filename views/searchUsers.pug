@@ -1,74 +1,74 @@
-extends ./layout
-block head
-    link(rel='stylesheet',href='/static/stylesheets/userManagement.css')
+//- extends ./layout
+//- block head
+//-     link(rel='stylesheet',href='/static/stylesheets/userManagement.css')
 
-block content
-    h3 Search Users
+//- block content
+//-     h3 Search Users
     
-    form#searchForm.form-group
-        .form-group
-            input.form-control(placeholder="First Name" name="firstName")
-        .form-group
-            input.form-control(placeholder="Last Name" name="lastName")
-    div(style="clear:both")
-    .btn-group
-        button#searchButton.btn.btn-success.btn-lg
-            span.glyphicon.glyphicon-search
-            | &nbsp;Search User
-    #searchResults
+//-     form#searchForm.form-group
+//-         .form-group
+//-             input.form-control(placeholder="First Name" name="firstName")
+//-         .form-group
+//-             input.form-control(placeholder="Last Name" name="lastName")
+//-     div(style="clear:both")
+//-     .btn-group
+//-         button#searchButton.btn.btn-success.btn-lg
+//-             span.glyphicon.glyphicon-search
+//-             | &nbsp;Search User
+//-     #searchResults
 
-    .hidden.userTemplate.user(style="display:inline-block;width:100%;background-color:#DDDDDD;padding:10px;border-radius:10px;margin-top:5px")
-        .userInfo(style="float:left;")
-            p.firstName
-            p.lastName
-            p.country
-            p.language
-            p.age
-            p.familyMembers
-            p.dateCreated
-        .btn-group(style="margin-right:20px;float:right;position: relative;top: 50%;transform: translateY(50%);")
-            button.deleteUserButton.btn.btn-danger.btn-lg
-                span.glyphicon.glyphicon-remove
-                | &nbsp;Delete User
-    script.
-        var removeUser = function(userID){
-            $.ajax({
-                type:"POST",
-                url:"/deleteUser",
-                data:{userID:userID},
-                success:function(data){
-                    // Add failure prompt
-                    toastr.success("User has been successfully removed")
-                },
-                dataType:"json"
-            })
-        } 
+//-     .hidden.userTemplate.user(style="display:inline-block;width:100%;background-color:#DDDDDD;padding:10px;border-radius:10px;margin-top:5px")
+//-         .userInfo(style="float:left;")
+//-             p.firstName
+//-             p.lastName
+//-             p.country
+//-             p.language
+//-             p.age
+//-             p.familyMembers
+//-             p.dateCreated
+//-         .btn-group(style="margin-right:20px;float:right;position: relative;top: 50%;transform: translateY(50%);")
+//-             button.deleteUserButton.btn.btn-danger.btn-lg
+//-                 span.glyphicon.glyphicon-remove
+//-                 | &nbsp;Delete User
+//-     script.
+//-         var removeUser = function(userID){
+//-             $.ajax({
+//-                 type:"POST",
+//-                 url:"/deleteUser",
+//-                 data:{userID:userID},
+//-                 success:function(data){
+//-                     // Add failure prompt
+//-                     toastr.success("User has been successfully removed")
+//-                 },
+//-                 dataType:"json"
+//-             })
+//-         } 
 
-        $('#searchButton').on('click',function(){
-            debugger;
-            var searchData = $('form#searchForm').serialize();
-            $.ajax({
-                type:"GET",
-                url:"/searchUser",
-                data:searchData,
-                success:function(data){
-                    // Add failure prompt
-                    $('.userList').addClass('hidden');
-                    for(var i = 0; i < data.users.length; i++){
-                        var user = $('.userTemplate').clone();
-                        $(user).removeClass('userTemplate').removeClass('hidden')
-                        $(user).children('.userInfo').children('.firstName').text("First Name:" + data.users[i].firstName)
-                        $(user).children('.userInfo').children('.lastName').text("Last Name:" + data.users[i].lastName)
-                        $(user).children('.userInfo').children('.country').text("Country: " + data.users[i].country)
-                        $(user).children('.userInfo').children('.language').text("Language: " + data.users[i].language)
-                        $(user).children('.userInfo').children('.age').text("Age: " + data.users[i].age)
-                        $(user).children('.userInfo').children('.familyMembers').text("Family Members: " + data.users[i].familyMembers.length)
-                        $(user).children('.userInfo').children('.dateCreated').text("Date Created: " + data.users[i].dateCreated)
-                        $(user).find('.deleteUserButton').attr('onclick',("removeUser('"+data.users[i]._id+"')"));
-                        debugger;
-                        $('#searchResults').append(user)
-                    }
-                },
-                dataType:"json"
-            })
-        })
+//-         $('#searchButton').on('click',function(){
+//-             debugger;
+//-             var searchData = $('form#searchForm').serialize();
+//-             $.ajax({
+//-                 type:"GET",
+//-                 url:"/searchUser",
+//-                 data:searchData,
+//-                 success:function(data){
+//-                     // Add failure prompt
+//-                     $('.userList').addClass('hidden');
+//-                     for(var i = 0; i < data.users.length; i++){
+//-                         var user = $('.userTemplate').clone();
+//-                         $(user).removeClass('userTemplate').removeClass('hidden')
+//-                         $(user).children('.userInfo').children('.firstName').text("First Name:" + data.users[i].firstName)
+//-                         $(user).children('.userInfo').children('.lastName').text("Last Name:" + data.users[i].lastName)
+//-                         $(user).children('.userInfo').children('.country').text("Country: " + data.users[i].country)
+//-                         $(user).children('.userInfo').children('.language').text("Language: " + data.users[i].language)
+//-                         $(user).children('.userInfo').children('.age').text("Age: " + data.users[i].age)
+//-                         $(user).children('.userInfo').children('.familyMembers').text("Family Members: " + data.users[i].familyMembers.length)
+//-                         $(user).children('.userInfo').children('.dateCreated').text("Date Created: " + data.users[i].dateCreated)
+//-                         $(user).find('.deleteUserButton').attr('onclick',("removeUser('"+data.users[i]._id+"')"));
+//-                         debugger;
+//-                         $('#searchResults').append(user)
+//-                     }
+//-                 },
+//-                 dataType:"json"
+//-             })
+//-         })
