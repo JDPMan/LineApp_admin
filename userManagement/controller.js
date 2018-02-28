@@ -127,14 +127,12 @@ exports.getLines = function (req, res) {
 }
 
 exports.getRecord = function(req,res){
-    // debugger;
     var id = req.url.split('/');
     id = id[id.length - 1];
     id = id.split('?')[0]
     id = mongo.ObjectId(id);
     var collection = req.query.type + 's';
     dbClient.collection(collection).find({_id:id}).toArray(function(err,result){
-        // debugger;
         // Add error checking
         res.render('editRecord', { record: result[0], countries: countries.all,})
     })
