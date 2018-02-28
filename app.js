@@ -41,5 +41,6 @@ mongoClient.connect(config.mongodb_url, {}, function (err, db) {
 require('./routes')(app);
 require('./userManagement/routes')(app);
 require('./login/routes')(app, passport);
+require('./mobileAPICalls/routes')(app,passport);
 
 // module.exports = app;

@@ -62,14 +62,12 @@ block content
         })
 
         $('#save').on('click',function(){
-            debugger;
             var data = $('form#editRecordForm').serialize();
             $.ajax({
                     type:"POST",
                     url:"/userManagement/saveRecord",
                     data:data,
                     success:function(data){
-                        debugger;
                         //Add error checking
                         toastr.success("Record has been successfully saved.")
                     },

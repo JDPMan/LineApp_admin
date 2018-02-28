@@ -90,7 +90,6 @@ block content
 
         function appendToList(admin){
             var $newAdmin = $('.adminTemplate').clone().removeClass('adminTemplate hidden')
-            debugger;
             for(key in admin){
                 if(key === "dateCreated"){
                     var date = new Date(admin.dateCreated);
