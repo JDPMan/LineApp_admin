@@ -66,6 +66,8 @@ exports.submitLM = function (req, res) {
 exports.submitLine = function (req, res) {
     var lineObj = req.body
     lineObj.dateCreated = new Date();
+    lineObj.capacity = parseInt(lineObj.capacity);
+    lineObj.currentCapacity = parseInt(lineObj.capacity);
     dbClient.collection('lines').insert(lineObj, function (err, result) {
         // Add error checking here
         res.status(200).json({ success: true, line: result.ops[0] })

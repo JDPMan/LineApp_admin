@@ -1,4 +1,5 @@
 var crypto = require('crypto');
+var mongo = require('mongodb');
 
 // exports.retrieveUsers = function (req, res) {
 //     dbClient.collection('users').find({}).toArray(function (err, results) {
@@ -21,6 +22,12 @@ exports.retrieveList = function(req,res){
     var collection = req.query.type;
     dbClient.collection(collection).find({}).limit(20).toArray(function(err,results){
         res.json(results);
+    })
+}
+exports.attemptLineAccess = function(req,res){
+    // Add fingerprint validation here
+    dbClient.collection('lines').findOneAndUpdate({_id: mongo.ObjectID(req.query.lineID)},{$inc: {currentCapacity:-1}},{returnOriginal:false},function(err,result){
+        res.json({success:true,line:result.value})
     })
 }
 
