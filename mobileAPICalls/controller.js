@@ -1,11 +1,6 @@
 var crypto = require('crypto');
 var mongo = require('mongodb');
 
-// exports.retrieveUsers = function (req, res) {
-//     dbClient.collection('users').find({}).toArray(function (err, results) {
-//         res.json(results);
-//     })
-// }
 exports.validateLineManager = function(req,res){
     var userName = req.query.userName;
     var password = req.query.password;

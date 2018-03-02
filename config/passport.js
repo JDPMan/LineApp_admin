@@ -1,5 +1,4 @@
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('../models/admin');
 var mongo = require('mongodb');
 var crypto = require('crypto');
 
@@ -22,7 +21,6 @@ module.exports = function (passport) {
                 return cb(null, user[0]);
             });
         }));
-
 
     // Configure Passport authenticated session persistence.
     //

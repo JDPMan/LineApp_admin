@@ -2,10 +2,6 @@ var mongo = require('mongodb');
 var countries = require('country-data').countries;
 var crypto = require('crypto');
 
-// exports.newUser = function(req,res){
-//     res.render('newUser',{countries:countries.all});
-// }
-
 exports.submitUser = function(req,res){
     var userObj = {};
     for (key in req.body) {

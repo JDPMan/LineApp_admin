@@ -8,29 +8,22 @@ var mongo = require('mongodb'),
     mongoClient = require('mongodb').MongoClient,
     config = require('./config'),
     passport = require('passport'),
-    mongoose = require('mongoose');
-var Strategy = require('passport-local').Strategy;
+    Strategy = require('passport-local').Strategy;
 
-mongoose.connect(config.mongodb_url)
-
-
-// Use application-level middleware for common functionality, including
-// logging, parsing, and session handling.
+/* Log in Stuff */
+// Use application-level middleware for common functionality, including logging, parsing, and session handling.
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'LA_Admin', resave: false, saveUninitialized: false }));
-
-// Initialize Passport and restore authentication state, if any, from the
-// session.
+// Initialize Passport and restore authentication state, if any, from the session.
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/static', express.static(__dirname + '/public'));
-
 require('./config/passport')(passport); // pass passport for configuration
-
 dbClient = null; // NOTE: global variable
 
+// Connect to database
 mongoClient.connect(config.mongodb_url, {}, function (err, db) {
     if (err) { return console.dir(err); }
     dbClient = db;
@@ -38,9 +31,8 @@ mongoClient.connect(config.mongodb_url, {}, function (err, db) {
     
 });
 
+// List of routes
 require('./routes')(app);
 require('./userManagement/routes')(app);
 require('./login/routes')(app, passport);
 require('./mobileAPICalls/routes')(app,passport);
-
-// module.exports = app;
