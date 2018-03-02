@@ -4,7 +4,7 @@ extends layout
 
 block content
     .userContainer
-        p.headerText ADD/CHANGE USER
+        p.headerText ADD/CHANGE RECIPIENT
         .newUser
             form#newUserForm(action="/submit")
                 .fieldContainer
@@ -39,7 +39,7 @@ block content
                     input(type="checkbox" name="disclaimer")
                 .fieldContainer
                     //- Used for determining which database collection to work with (users) 
-                    input.hidden(type="text" value="user" name="type")
+                    input.hidden(type="text" value="recipient" name="type")
                 .clearFloat
         button#formSubmit(style="float:right; margin-top: 10px;") Submit
         button#addFamily.addFamilyButton(style="float:right; margin: 10px 10px 0 0 ") Add Family Member
@@ -51,33 +51,33 @@ block content
 
         
         
-        p.headerText USERS
+        p.headerText RECIPIENTS
         .usersList
-            each user in users
+            each recipient in recipients
                 -var dateStrDC = "NA"
                 -var dateStrDOB = "NA"
-                -if(typeof user.dateCreated !== 'undefined' && user.dateCreated !== "")
-                    -var year = user.dateCreated.getFullYear()
-                    -var month = user.dateCreated.getMonth()
-                    -var date = user.dateCreated.getDate()
+                -if(typeof recipient.dateCreated !== 'undefined' && recipient.dateCreated !== "")
+                    -var year = recipient.dateCreated.getFullYear()
+                    -var month = recipient.dateCreated.getMonth()
+                    -var date = recipient.dateCreated.getDate()
                     -dateStrDC = month + "/" + date + "/" + year
-                -if(typeof user.dateOfBirth !== 'undefined' && user.dateOfBirth !== "")
-                    -var year = user.dateOfBirth.getFullYear()
-                    -var month = user.dateOfBirth.getMonth()
-                    -var date = user.dateOfBirth.getDate()
+                -if(typeof recipient.dateOfBirth !== 'undefined' && recipient.dateOfBirth !== "")
+                    -var year = recipient.dateOfBirth.getFullYear()
+                    -var month = recipient.dateOfBirth.getMonth()
+                    -var date = recipient.dateOfBirth.getDate()
                     -dateStrDOB = month + "/" + date + "/" + year
-                a(href="/userManagement/editRecord/"+user._id+'?type='+user.type)
+                a(href="/userManagement/editRecord/"+recipient._id+'?type='+recipient.type)
                     .listUser
-                        p.strong.firstName=user.firstName
-                        p.strong.lastName=user.lastName
-                        p.country=user.country
-                        p.languages=user.languages
+                        p.strong.firstName=recipient.firstName
+                        p.strong.lastName=recipient.lastName
+                        p.country=recipient.country
+                        p.languages=recipient.languages
                         p.dateOfBirth DOB: #{dateStrDOB}
                         p.dateCreated Created: #{dateStrDC}
-                        p.caseNumber Case #: #{user.caseNumber}
-                        p.housingLocation Housing Location: #{user.housingLocation}
-                        p.specialNeeds Special Needs: #{user.specialNeeds}
-                        p.hidden._id=user._id
+                        p.caseNumber Case #: #{recipient.caseNumber}
+                        p.housingLocation Housing Location: #{recipient.housingLocation}
+                        p.specialNeeds Special Needs: #{recipient.specialNeeds}
+                        p.hidden._id=recipient._id
                         span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
                         .clearFloat
 
@@ -108,12 +108,12 @@ block content
                     label DISCLAIMER ACKNOWLEDGED
                     input(type="checkbox" name="disclaimer")
                 .fieldContainer
-                    //- Used for determining which database collection to insert to (users) 
-                    input.hidden(type="text" value="users" name="type")
+                    //- Used for determining which database collection to insert to (recipients) 
+                    input.hidden(type="text" value="recipient" name="type")
                 .clearFloat
 
         
-        a.userTemplate.hidden
+        a.recipientTemplate.hidden
             .listUser
                 p.strong.firstName
                 p.strong.lastName
@@ -183,41 +183,41 @@ block content
             var data = $('form#newUserForm').serialize();
             $.ajax({
                 type:"POST",
-                url:"/userManagement/submitUser",
+                url:"/userManagement/submitRecipient",
                 data:data,
                 success:function(data){
                     // Add failure prompt
-                    toastr.success("User has been successfully added!")
-                    appendToList(data.user);
+                    toastr.success("Recipient has been successfully added!")
+                    appendToList(data.recipient);
                 },
                 dataType:"json"
             })
         })
 
-        function appendToList(user){
-            var $newUser = $('.userTemplate').clone().removeClass('userTemplate hidden')
-            for(key in user){
-                if(key === "dateCreated" && user[key] !== ''){
-                    var date = new Date(user[key]);
+        function appendToList(recipient){
+            var $newRecipient = $('.recipientTemplate').clone().removeClass('recipientTemplate hidden')
+            for(key in recipient){
+                if(key === "dateCreated" && recipient[key] !== ''){
+                    var date = new Date(recipient[key]);
                     var year = date.getFullYear();
                     var month = date.getMonth() + 1;
                     var date = date.getDate();
                     dateStr = month + "/" + date + "/" + year
-                    $newUser.find('.'+key).text("Created: " + dateStr)
+                    $newRecipient.find('.'+key).text("Created: " + dateStr)
                 }else if(key === "dateOfBirth"){
-                    var date = new Date(user[key]);
+                    var date = new Date(recipient[key]);
                     var year = date.getFullYear();
                     var month = date.getMonth() + 1;
                     var date = date.getDate();
                     dateStr = month + "/" + date + "/" + year
-                    if(user[key] === '')
+                    if(recipient[key] === '')
                         dateStr = "N/A"
-                    $newUser.find('.'+key).text("DOB: " + dateStr)
+                    $newRecipient.find('.'+key).text("DOB: " + dateStr)
                 }else{
-                    $newUser.find('.'+key).text(user[key])
+                    $newRecipient.find('.'+key).text(recipient[key])
                 }
             }
-            var href = '/userManagement/editRecord/' + user._id + '?type=' + user.type
-            $newUser.attr('href',href)
-            $('.usersList').append($newUser)
+            var href = '/userManagement/editRecord/' + recipient._id + '?type=' + recipient.type
+            $newRecipient.attr('href',href)
+            $('.usersList').append($newRecipient)
         }

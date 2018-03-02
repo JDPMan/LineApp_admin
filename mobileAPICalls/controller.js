@@ -16,7 +16,9 @@ exports.validateLineManager = function(req,res){
 exports.retrieveList = function(req,res){
     var collection = req.query.type;
     dbClient.collection(collection).find({}).limit(20).toArray(function(err,results){
-        res.json(results);
+        // setTimeout(function () {
+            res.json(results);
+        // },3000)
     })
 }
 exports.attemptLineAccess = function(req,res){
@@ -25,6 +27,7 @@ exports.attemptLineAccess = function(req,res){
         res.json({success:true,line:result.value})
     })
 }
+
 
 
 

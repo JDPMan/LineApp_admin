@@ -17,9 +17,4 @@ module.exports = function(app, passport){
             req.logout();
             res.redirect('/');
         });
-    // app.get('/profile',
-    //     require('connect-ensure-login').ensureLoggedIn(),
-    //     function (req, res) {
-    //         res.render('profile', { user: req.user });
-    //     });
 }

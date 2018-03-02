@@ -2,31 +2,31 @@ var mongo = require('mongodb');
 var countries = require('country-data').countries;
 var crypto = require('crypto');
 
-exports.submitUser = function(req,res){
-    var userObj = {};
+exports.submitRecipient = function(req,res){
+    var recipientObj = {};
     for (key in req.body) {
         var splitKey = key.split('-');
         if (splitKey.length > 1) { // Family Members
-            if (typeof userObj.familyMembers === 'undefined')
-                userObj.familyMembers = [];
-            if (typeof userObj.familyMembers[splitKey[0]] === 'undefined')
-                userObj.familyMembers[splitKey[0]] = {};
-            userObj.familyMembers[splitKey[0]][splitKey[1]] = req.body[key];
+            if (typeof recipientObj.familyMembers === 'undefined')
+                recipientObj.familyMembers = [];
+            if (typeof recipientObj.familyMembers[splitKey[0]] === 'undefined')
+                recipientObj.familyMembers[splitKey[0]] = {};
+            recipientObj.familyMembers[splitKey[0]][splitKey[1]] = req.body[key];
         } else { // Everything else
             if(key === 'dateOfBirth' && req.body[key] !== "")
-                userObj[key] = new Date(req.body[key]);
+                recipientObj[key] = new Date(req.body[key]);
             else if(key === 'password'){
                 encryptPassword = true;
             }
             else
-                userObj[key] = req.body[key];
+                recipientObj[key] = req.body[key];
         }
     }
     
-    userObj.dateCreated = new Date();
-    dbClient.collection('users').insert(userObj, function (err, result) {
+    recipientObj.dateCreated = new Date();
+    dbClient.collection('recipients').insert(recipientObj, function (err, result) {
         // Add error checking here
-        res.status(200).json({ success: true, user: result.ops[0]})
+        res.status(200).json({ success: true, recipient: result.ops[0]})
     })
 }
 exports.submitAdmin = function (req, res) {
@@ -82,7 +82,7 @@ exports.search = function(req,res){
     var searchObj = {};
     var collection;
     var typeReference = {
-        "users":"User",
+        "recipients":"Recipient",
         "admins":"Admin",
         "lineManagers":"Line Managers"
     }
@@ -104,23 +104,23 @@ exports.search = function(req,res){
 
 exports.getAdmins = function(req,res){
     dbClient.collection('admins').find({}).limit(20).toArray(function(err,results){
-        res.render('admin', { admins: results, user: req.user})
+        res.render('admin', { admins: results, currentlyLoggedIn: req.user})
     })
 }
 exports.getLineManagers = function (req, res) {
     dbClient.collection('lineManagers').find({}).limit(20).toArray(function (err, results) {
-        res.render('lineManager', { lms: results, user: req.user })
+        res.render('lineManager', { lms: results, currentlyLoggedIn: req.user })
     })
 }
-exports.getUsers = function (req, res) {
-    dbClient.collection('users').find({}).limit(20).toArray(function (err, results) {
-        res.render('user', { users: results, countries: countries.all, user: req.user})
+exports.getRecipients = function (req, res) {
+    dbClient.collection('recipients').find({}).limit(20).toArray(function (err, results) {
+        res.render('recipient', { recipients: results, countries: countries.all, currentlyLoggedIn: req.user})
     })
 }
 
 exports.getLines = function (req, res) {
     dbClient.collection('lines').find({}).limit(20).toArray(function (err, results) {
-        res.render('line', { lines: results, user: req.user })
+        res.render('line', { lines: results, currentlyLoggedIn: req.user })
     })
 }
 
@@ -161,8 +161,8 @@ exports.saveRecord = function(req,res){
     })
 }
 
-exports.retrieveUsers = function(req,res){
-    dbClient.collection('users').find({}).toArray(function(err,results){
+exports.retrieveRecipients = function(req,res){
+    dbClient.collection('recipients').find({}).toArray(function(err,results){
         res.json(results);
     })
 }

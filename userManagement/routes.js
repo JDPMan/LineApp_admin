@@ -1,7 +1,7 @@
 var userServices = require('./controller');
 
 module.exports = function (app) {
-    app.post('/userManagement/submitUser',userServices.submitUser);
+    app.post('/userManagement/submitRecipient',userServices.submitRecipient);
     app.post('/userManagement/submitAdmin', userServices.submitAdmin);
     app.post('/userManagement/submitLM', userServices.submitLM);
     app.post('/userManagement/submitLine',userServices.submitLine);
@@ -12,7 +12,7 @@ module.exports = function (app) {
 
     app.get('/userManagement/admins',userServices.getAdmins);
     app.get('/userManagement/lineManagers', userServices.getLineManagers);
-    app.get('/userManagement/users', userServices.getUsers);
+    app.get('/userManagement/recipients', userServices.getRecipients);
     app.get('/userManagement/lines',userServices.getLines);
 
     app.get('/userManagement/editRecord/*',userServices.getRecord);

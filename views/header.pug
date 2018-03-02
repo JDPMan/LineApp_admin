@@ -9,8 +9,8 @@
             button#searchModalButton.btn.btn-default(type="button" data-toggle="modal" data-target="#searchModal")
                 span.glyphicon.glyphicon-search(style="padding-right: 5px;")
                 | Search
-            -if(typeof user !== 'undefined')
-                p(style="margin:0; float: right") #{user.firstName + " " + user.lastName} &nbsp;
+            -if(typeof currentlyLoggedIn !== 'undefined')
+                p(style="margin:0; float: right") #{currentlyLoggedIn.firstName + " " + currentlyLoggedIn.lastName} &nbsp;
                     a(href="/logout")
                         span.logout [logout]
             -else
