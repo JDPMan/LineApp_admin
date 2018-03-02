@@ -23,8 +23,48 @@ exports.retrieveList = function(req,res){
 }
 exports.attemptLineAccess = function(req,res){
     // Add fingerprint validation here
-    dbClient.collection('lines').findOneAndUpdate({_id: mongo.ObjectID(req.query.lineID)},{$inc: {currentCapacity:-1}},{returnOriginal:false},function(err,result){
-        res.json({success:true,line:result.value})
+    var lineID = mongo.ObjectID(req.query.lineID);
+    var recipientID = mongo.ObjectID(req.query.recipientID);
+    dbClient.collection('lines').findOneAndUpdate({_id: lineID},{$inc: {currentCapacity:-1}},{returnOriginal:false},function(err,line){
+        dbClient.collection('recipients').find({_id: recipientID}).toArray(function(err,recipient){
+            // Add Error Checking
+            logRecipientAction(recipient[0],line.value,function(){
+                res.json({success:true,line:line.value})
+            })
+        })
+    })
+}
+exports.retrieveRecipientActions = function(req,res){
+    var recipientID = req.query.recipientID
+    dbClient.collection('recipientActions').find({recipientID:recipientID}).toArray(function(err,result){
+        return res.json({success:true,recipientActions:result[0]})
+    })
+}
+
+function logRecipientAction(recipient,line,callback){
+    var actionDate = new Date();
+    var query = {recipientID: recipient._id.toString()};
+    var sort = {};
+    var update = {
+        $push: {
+            actions: {
+                lineID: line._id.toString(),
+                date: actionDate,
+                resource: line.resource,
+                numTaken: 1 // Add family member access here
+                // Add more items to track here for each transaction
+            }
+        },
+        $min: { // Only update if the item's date is less than then previously stored date
+            "firstAction": actionDate
+        },
+        $max: { // Only update if the item's date is greater than the previously stored date
+            "lastAction": actionDate
+        }
+    };
+    var options = { upsert: true, new: true };
+    dbClient.collection('recipientActions').findAndModify(query, sort, update, options,function(err,result){
+        return callback();
     })
 }
 
