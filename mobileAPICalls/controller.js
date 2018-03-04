@@ -7,7 +7,7 @@ exports.validateLineManager = function(req,res){
     
     dbClient.collection('lineManagers').find({userName:userName}).toArray(function(err,result){
         if (result.length > 0 && validPassword(password, result[0].password)){
-            res.json({success:true,message:""})
+            res.json({success:true, lm: result[0], message:""})
         }else{
             res.json({success:false,message:"Invalid Username or Password"})
         }
@@ -16,9 +16,7 @@ exports.validateLineManager = function(req,res){
 exports.retrieveList = function(req,res){
     var collection = req.query.type;
     dbClient.collection(collection).find({}).limit(20).toArray(function(err,results){
-        // setTimeout(function () {
             res.json(results);
-        // },3000)
     })
 }
 exports.attemptLineAccess = function(req,res){
@@ -65,6 +63,17 @@ function logRecipientAction(recipient,line,callback){
     var options = { upsert: true, new: true };
     dbClient.collection('recipientActions').findAndModify(query, sort, update, options,function(err,result){
         return callback();
+    })
+}
+
+exports.saveRecord = function(req,res){
+    var record = JSON.parse(req.query.data)
+    record.dateCreated = new Date(record.dateCreated)
+    var collection = record.type + 's';
+    var recordID = mongo.ObjectID(record._id);
+    delete record._id;
+    dbClient.collection('lines').findOneAndUpdate({ _id: recordID }, { $set: record }, { returnOriginal: false }, function (err, record) {
+        res.json({success:true,record:record.value})
     })
 }
 
