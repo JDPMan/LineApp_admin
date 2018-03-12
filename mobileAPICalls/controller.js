@@ -1,5 +1,6 @@
 var crypto = require('crypto');
 var mongo = require('mongodb');
+var moment = require('moment');
 
 exports.validateLineManager = function(req,res){
     var userName = req.query.userName;
@@ -16,18 +17,48 @@ exports.validateLineManager = function(req,res){
 exports.retrieveList = function(req,res){
     var collection = req.query.type;
     dbClient.collection(collection).find({}).limit(20).toArray(function(err,results){
-            res.json(results);
+        res.json(results);
     })
 }
 exports.attemptLineAccess = function(req,res){
     // Add fingerprint validation here
-    var lineID = mongo.ObjectID(req.query.lineID);
-    var recipientID = mongo.ObjectID(req.query.recipientID);
-    dbClient.collection('lines').findOneAndUpdate({_id: lineID},{$inc: {currentCapacity:-1}},{returnOriginal:false},function(err,line){
-        dbClient.collection('recipients').find({_id: recipientID}).toArray(function(err,recipient){
-            // Add Error Checking
-            logRecipientAction(recipient[0],line.value,function(){
-                res.json({success:true,line:line.value})
+    // if no fingerprint found
+        // return res.json({success:false, type: 'credentialsNotFound', accessFault: accessFault})
+    var lineID = req.query.lineID;
+    var recipientID = req.query.recipientID;
+    var accessFrequency = parseInt(req.query.accessFrequency);
+    var accessLowerBound = moment().subtract(accessFrequency,'hours').toDate();
+    
+    // Check user records
+    var searchObj = {
+        recipientID: recipientID,
+        actions: {
+            $elemMatch: {
+                lineID: lineID,
+                date: {
+                    $gte: accessLowerBound
+                }
+            }
+        }
+    }
+    dbClient.collection('recipientActions').find(searchObj).toArray(function(err,result){
+        if(result.length > 0){
+            var recipient = result[0];
+            var accessFault;
+            var actions = recipient.actions.sort(function(a,b){return a.date < b.date})
+            for(var i = 0; i < recipient.actions.length; i++){
+                if(recipient.actions[i].date > accessLowerBound && recipient.actions[i].lineID === lineID)
+                    accessFault = recipient.actions[i];
+            }
+            // Do we want to log when a recipient makes a fault?
+            return res.json({success:false, type: 'faultyAccess', accessFault: accessFault})
+        }
+        dbClient.collection('lines').findOneAndUpdate({ _id: mongo.ObjectID(lineID)},{$inc: {currentCapacity:-1}},{returnOriginal:false},function(err,line){
+            dbClient.collection('recipients').find({_id: mongo.ObjectID(recipientID)}).toArray(function(err,recipient){
+                // Add Error Checking
+                logRecipientAction(recipient[0],line.value,function(actionObj){
+                    return res.json({success:true,line:line.value, accessSuccess:actionObj})
+                })
             })
         })
     })
@@ -43,15 +74,16 @@ function logRecipientAction(recipient,line,callback){
     var actionDate = new Date();
     var query = {recipientID: recipient._id.toString()};
     var sort = {};
+    var actionObj = {
+        lineID: line._id.toString(),
+        date: actionDate,
+        resource: line.resource,
+        numTaken: 1 // Add family member access here
+        // Add more items to track here for each transaction
+    }
     var update = {
         $push: {
-            actions: {
-                lineID: line._id.toString(),
-                date: actionDate,
-                resource: line.resource,
-                numTaken: 1 // Add family member access here
-                // Add more items to track here for each transaction
-            }
+            actions: actionObj
         },
         $min: { // Only update if the item's date is less than then previously stored date
             "firstAction": actionDate
@@ -62,7 +94,7 @@ function logRecipientAction(recipient,line,callback){
     };
     var options = { upsert: true, new: true };
     dbClient.collection('recipientActions').findAndModify(query, sort, update, options,function(err,result){
-        return callback();
+        return callback(actionObj);
     })
 }
 
