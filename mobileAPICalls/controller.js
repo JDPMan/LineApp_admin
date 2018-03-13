@@ -23,7 +23,7 @@ exports.retrieveList = function(req,res){
 exports.attemptLineAccess = function(req,res){
     // Add fingerprint validation here
     // if no fingerprint found
-        // return res.json({success:false, type: 'credentialsNotFound', accessFault: accessFault})
+        // return res.json({success:false, type: 'credentialsNotFound'})
     var lineID = req.query.lineID;
     var recipientID = req.query.recipientID;
     var accessFrequency = parseInt(req.query.accessFrequency);
