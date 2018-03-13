@@ -23,7 +23,7 @@ exports.retrieveList = function(req,res){
 exports.attemptLineAccess = function(req,res){
     // Add fingerprint validation here
     // if no fingerprint found
-        // return res.json({success:false, type: 'credentialsNotFound'})
+        // return res.json({success:false, type: 'credentialsNotFound', recipient: {}})
     var lineID = req.query.lineID;
     var recipientID = req.query.recipientID;
     var accessFrequency = parseInt(req.query.accessFrequency);
@@ -51,15 +51,18 @@ exports.attemptLineAccess = function(req,res){
                     accessFault = recipient.actions[i];
             }
             // Do we want to log when a recipient makes a fault?
-            return res.json({success:false, type: 'faultyAccess', accessFault: accessFault})
+            return dbClient.collection('recipients').find({ _id: mongo.ObjectID(recipientID) }).toArray(function (err, recipient) {
+                return res.json({success:false, type: 'faultyAccess', accessFault: accessFault, recipient: recipient[0]})
+            })
         }
         dbClient.collection('lines').findOneAndUpdate({ _id: mongo.ObjectID(lineID)},{$inc: {currentCapacity:-1}},{returnOriginal:false},function(err,line){
             dbClient.collection('recipients').find({_id: mongo.ObjectID(recipientID)}).toArray(function(err,recipient){
                 // Add Error Checking
-                logRecipientAction(recipient[0],line.value,function(actionObj){
-                    return res.json({success:true,line:line.value, accessSuccess:actionObj})
+                var recipient = recipient[0];
+                logRecipientAction(recipient,line.value,function(actionObj){
+                    return res.json({success:true,line:line.value, accessSuccess:actionObj, recipient: recipient})
                 })
-            })
+            });
         })
     })
 }
@@ -71,11 +74,12 @@ exports.retrieveRecipientActions = function(req,res){
 }
 
 function logRecipientAction(recipient,line,callback){
-    var actionDate = new Date();
+    var actionDate = moment().toDate()
     var query = {recipientID: recipient._id.toString()};
     var sort = {};
     var actionObj = {
         lineID: line._id.toString(),
+        lineName: line.name,
         date: actionDate,
         resource: line.resource,
         numTaken: 1 // Add family member access here
