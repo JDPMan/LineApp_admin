@@ -51,12 +51,12 @@ exports.attemptLineAccess = function(req,res){
                     accessFault = recipient.actions[i];
             }
             // Do we want to log when a recipient makes a fault?
-            return dbClient.collection('recipients').find({ _id: mongo.ObjectID(recipientID) }).toArray(function (err, recipient) {
+            return dbClient.collection('recipients').find({ _id: mongo.ObjectID(recipientID) }).toArray(function (err1, recipient) {
                 return res.json({success:false, type: 'faultyAccess', accessFault: accessFault, recipient: recipient[0]})
             })
         }
-        dbClient.collection('lines').findOneAndUpdate({ _id: mongo.ObjectID(lineID)},{$inc: {currentCapacity:-1}},{returnOriginal:false},function(err,line){
-            dbClient.collection('recipients').find({_id: mongo.ObjectID(recipientID)}).toArray(function(err,recipient){
+        dbClient.collection('lines').findOneAndUpdate({ _id: mongo.ObjectID(lineID)},{$inc: {currentCapacity:-1}},{returnOriginal:false},function(err2,line){
+            dbClient.collection('recipients').find({_id: mongo.ObjectID(recipientID)}).toArray(function(err3,recipient){
                 // Add Error Checking
                 var recipient = recipient[0];
                 logRecipientAction(recipient,line.value,function(actionObj){
@@ -101,11 +101,17 @@ function logRecipientAction(recipient,line,callback){
         return callback(actionObj);
     })
 }
-
+exports.saveRecipient = function(req,res){
+    var record = JSON.parse(req.query.data);
+    record.type = 'recipient';
+    record.dateCreated = new Date();
+    dbClient.collection('recipients').insert(record,function(err,result){
+        res.json({success:true})
+    })
+}
 exports.saveRecord = function(req,res){
     var record = JSON.parse(req.query.data)
     record.dateCreated = new Date(record.dateCreated)
-    var collection = record.type + 's';
     var recordID = mongo.ObjectID(record._id);
     record.currentCapacity = parseInt(record.currentCapacity);
     record.capacity = parseInt(record.capacity);
