@@ -107,6 +107,8 @@ exports.saveRecord = function(req,res){
     record.dateCreated = new Date(record.dateCreated)
     var collection = record.type + 's';
     var recordID = mongo.ObjectID(record._id);
+    record.currentCapacity = parseInt(record.currentCapacity);
+    record.capacity = parseInt(record.capacity);
     delete record._id;
     dbClient.collection('lines').findOneAndUpdate({ _id: recordID }, { $set: record }, { returnOriginal: false }, function (err, record) {
         res.json({success:true,record:record.value})
