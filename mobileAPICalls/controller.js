@@ -2,15 +2,22 @@ var crypto = require('crypto');
 var mongo = require('mongodb');
 var moment = require('moment');
 
-exports.validateLineManager = function(req,res){
+exports.login = function(req,res){
     var userName = req.query.userName;
     var password = req.query.password;
     
-    dbClient.collection('lineManagers').find({userName:userName}).toArray(function(err,result){
-        if (result.length > 0 && validPassword(password, result[0].password)){
-            res.json({success:true, lm: result[0], message:""})
+    dbClient.collection('lineManagers').find({userName:userName}).toArray(function(err,lm){
+        if (lm.length > 0 && validPassword(password, lm[0].password)){
+            res.json({success:true, loggedIn: lm[0], message:""})
         }else{
-            res.json({success:false,message:"Invalid Username or Password"})
+            dbClient.collection('admins').find({userName:userName}).toArray(function(err,admin){
+                if(admin.length > 0 && validPassword(password, admin[0].password)){
+                    res.json({success:true, loggedIn: admin[0], message:""})
+                }else{
+                    res.json({success:false,message:"Invalid Username or Password"})
+                }
+            })
+            
         }
     })
 }
