@@ -5,7 +5,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
 var mongo = require('mongodb'),
-    // mongoClient = require('mongodb').MongoClient,
+    mongoClient = require('mongodb').MongoClient,
     config = require('./config'),
     passport = require('passport'),
     Strategy = require('passport-local').Strategy;
@@ -22,29 +22,18 @@ app.use(passport.session());
 app.use('/static', express.static(__dirname + '/public'));
 require('./config/passport')(passport); // pass passport for configuration
 dbClient = null; // NOTE: global variable
-var MongoClient = require('mongodb').MongoClient;
-debugger;
-var uri = "mongodb://LULineApp:LineApp1971@lineapp-shard-00-00-qryet.mongodb.net:27017,lineapp-shard-00-01-qryet.mongodb.net:27017,lineapp-shard-00-02-qryet.mongodb.net:27017/test?ssl=true&replicaSet=LineApp-shard-0&authSource=admin";
-MongoClient.connect(uri, function (err, db) {
-        if (err) { 
+
+// Connect to database
+mongoClient.connect(config.mongodb_url, {}, function (err, db) {
+    if (err) { 
         console.log('Mongo connection Failed...')
         return console.dir(err);
     }
     console.log("Successfully connected to Mongo!");
     dbClient = db;
     app.listen(config.port, () => console.log('Line App Admin listening on port ' + config.port));
-});
-// Connect to database
-// mongoClient.connect(config.mongodb_url, {}, function (err, db) {
-//     if (err) { 
-//         console.log('Mongo connection Failed...')
-//         return console.dir(err);
-//     }
-//     console.log("Successfully connected to Mongo!");
-//     dbClient = db;
-//     app.listen(config.port, () => console.log('Line App Admin listening on port ' + config.port));
     
-// });
+});
 
 // List of routes
 require('./routes')(app);
