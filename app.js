@@ -25,7 +25,11 @@ dbClient = null; // NOTE: global variable
 
 // Connect to database
 mongoClient.connect(config.mongodb_url, {}, function (err, db) {
-    if (err) { return console.dir(err); }
+    if (err) { 
+        console.log('Mongo connection Failed...')
+        return console.dir(err);
+    }
+    console.log("Successfully connected to Mongo!");
     dbClient = db;
     app.listen(config.port, () => console.log('Line App Admin listening on port ' + config.port));
     
