@@ -120,12 +120,29 @@ exports.saveRecord = function(req,res){
     var record = JSON.parse(req.query.data)
     record.dateCreated = new Date(record.dateCreated)
     var recordID = mongo.ObjectID(record._id);
-    record.currentCapacity = parseInt(record.currentCapacity);
-    record.capacity = parseInt(record.capacity);
     delete record._id;
-    dbClient.collection('lines').findOneAndUpdate({ _id: recordID }, { $set: record }, { returnOriginal: false }, function (err, record) {
+    var saveObj;
+    if(record.type === 'line')
+        saveObj = generateLineObj(record);
+    else if(record.type === 'recipient')
+        saveObj = generateRecipientObj;
+    else
+        saveObj = generateAdminLMObj(record);
+    var collection = record.type + 's';
+    dbClient.collection(collection).findOneAndUpdate({ _id: recordID }, { $set: saveObj }, { returnOriginal: false }, function (err, record) {
         res.json({success:true,record:record.value})
     })
+}
+generateLineObj = function(lineObj){
+    lineObj.currentCapacity = parseInt(lineObj.currentCapacity);
+    lineObj.capacity = parseInt(lineObj.capacity);
+    return lineObj
+}
+generateAdminLMObj = function(obj){
+    return obj;
+}
+generateRecipientObj = function(recipientObj){
+
 }
 
 
