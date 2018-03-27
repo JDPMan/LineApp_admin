@@ -73,10 +73,14 @@ exports.attemptLineAccess = function(req,res){
         })
     })
 }
+// // "adminRoute":"http://lineappadmin-lineappadmin.193b.starter-ca-central-1.openshiftapps.com"
 exports.retrieveRecipientActions = function(req,res){
     var recipientID = req.query.recipientID
     dbClient.collection('recipientActions').find({recipientID:recipientID}).toArray(function(err,result){
-        return res.json({success:true,recipientActions:result[0]})
+        if(result.length > 0)
+            return res.json({success:true,recipientActions:result[0]})
+        else
+            return res.json({success:false, message:'No Recipient Actions To Show'})
     })
 }
 
