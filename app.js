@@ -31,7 +31,9 @@ mongoClient.connect(config.mongodb_url, {}, function (err, db) {
     }
     console.log("Successfully connected to Mongo!");
     dbClient = db;
-    app.listen(config.port, () => console.log('Line App Admin listening on port ' + config.port));
+    app.listen(config.port, config.ip);
+    console.log('Server running on http://%s:%s', config.ip, config.port);
+    // app.listen(config.port, () => console.log('Line App Admin listening on port ' + config.port));
     
 });
 
