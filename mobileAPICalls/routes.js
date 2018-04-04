@@ -7,4 +7,5 @@ module.exports = function (app, passport) {
     app.get('/mobileAPI/retrieveRecipientActions',APIServices.retrieveRecipientActions);
     app.post('/mobileAPI/saveRecord',APIServices.saveRecord);
     app.post('/mobileAPI/saveRecipient',APIServices.saveRecipient);
+    app.get('/mobileAPI/retrieveSettings',APIServices.retrieveSettings);
 }
