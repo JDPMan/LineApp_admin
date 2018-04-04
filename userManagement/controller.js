@@ -22,6 +22,8 @@ exports.submitRecipient = function(req,res){
                 recipientObj[key] = req.body[key];
         }
     }
+    if(typeof recipientObj.familyMembers === 'undefined')
+        recipientObj.familyMembers = [];
     
     recipientObj.dateCreated = new Date();
     dbClient.collection('recipients').insert(recipientObj, function (err, result) {

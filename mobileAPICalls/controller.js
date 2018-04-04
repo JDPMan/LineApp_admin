@@ -74,7 +74,7 @@ exports.attemptLineAccess = function(req,res){
     })
 }
 exports.retrieveSettings = function(req,res){
-    var type = req.body.type;
+    var type = req.query.type;
     dbClient.collection('settings').find({type:type}).toArray(function(err,settings){
         res.json({success:true,settings:settings[0]})
     })

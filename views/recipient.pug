@@ -174,7 +174,7 @@ block content
             if(confirm("Are you sure you want to delete this user?")){
                 var id = $(this).parent().find('._id').text();
                 $(this).parent().remove()
-                var data = {_id: id, collection: "users"};
+                var data = {_id: id, collection: "recipients"};
                 $.ajax({
                     type:"POST",
                     url:"/userManagement/deleteRecord",
