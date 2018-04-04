@@ -73,6 +73,12 @@ exports.attemptLineAccess = function(req,res){
         })
     })
 }
+exports.retrieveSettings = function(req,res){
+    var type = req.body.type;
+    dbClient.collection('settings').find({type:type}).toArray(function(err,settings){
+        res.json({success:true,settings:settings[0]})
+    })
+}
 // // "adminRoute":"http://lineappadmin-lineappadmin.193b.starter-ca-central-1.openshiftapps.com"
 exports.retrieveRecipientActions = function(req,res){
     var recipientID = req.query.recipientID
