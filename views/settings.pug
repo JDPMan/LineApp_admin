@@ -1,0 +1,77 @@
+extends layout
+
+block content
+    each collection in settings
+        -var typeContainerId = collection.type + 'Container'
+        div.type(id=typeContainerId name=collection.name type=collection.type)
+            h3=collection.name
+            h5 Custom Fields
+            each field in collection.fields
+                input.field(type="text" value=field)
+                span.delete(style="padding: 10px" type=collection.type name=field) x
+                //- Place editable field here
+        button.newFieldButton.btn.btn-success(id=collection.type) Add New Field
+        hr
+
+    
+    .fieldContainer.newFieldTemplate.hidden
+        input(type="text" placeholder="Name of New Field")
+
+    #save.hidden
+        button.btn.btn-success Save
+        
+
+    script.
+        $('.newFieldButton').on('click',function(){
+            //- debugger;
+            $('#save').removeClass('hidden');
+            var type = $(this).attr('id');
+            $newField = $('.newFieldTemplate').clone().removeClass('newFieldTemplate hidden');
+            $newField.find('input').addClass('field');
+            $('#' + type + 'Container').append($newField)
+            //- debugger;
+        })
+        $('.delete').on('click',function(){
+            var type = $(this).attr('type');
+            var name = $(this).attr('name');
+            if(confirm("Are you sure? Deleting a field name may introduce inconsistencies between records.")){
+                $.ajax({
+                    url: '/userManagement/deleteSettings',
+                    data: {type:type,name:name},
+                    method:'POST',
+                    success: function(data){
+                        if(data.success)
+                            window.location = '/userManagement/settings';
+                    }
+                })
+            }
+        })
+        $('#save').on('click',function(){
+            var settings = [];
+            $('.type').each(function(){
+                var typeObj = {};
+                typeObj.type = $(this).attr('type');
+                typeObj.name = $(this).attr('name');
+                typeObj.fields = [];
+                $(this).find('.field').each(function(){
+                    if($(this).val() !== '')
+                        typeObj.fields.push($(this).val())
+                })
+                settings.push(typeObj);
+            })
+            if(confirm("Are you sure? Creating or editing a field name may introduce inconsistencies between records.")){
+                $.ajax({
+                    url: '/userManagement/saveSettings',
+                    data: {settings:settings},
+                    method: 'POST',
+                    success: function(data){
+                        if(data.success)
+                            window.location = '/userManagement/settings';
+                    }
+                })
+            }
+        })
+
+        $('input').on('change, keyup',function(){
+            $('#save').removeClass('hidden');
+        })

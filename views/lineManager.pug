@@ -17,6 +17,13 @@ block content
                 .fieldContainer
                     label PASSWORD
                     input(type="password" placeholder="Password" name="password")
+                .fieldContainer
+                    label NOTES
+                    textarea(placeholder="Notes" name="notes")
+                each field in settings.fields
+                    .fieldContainer
+                        label(style="text-transform:uppercase")=field
+                        input(type="text" name=field placeholder=field)
                 .fieldContainer.hidden
                     input(type="text" name="type" value="lineManager")
                 .clearFloat

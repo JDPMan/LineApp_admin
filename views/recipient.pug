@@ -1,5 +1,3 @@
-//- CAN PROBABLY DELETE THIS FILE
-
 extends layout
 
 block content
@@ -35,11 +33,18 @@ block content
                     label SPECIAL NEEDS
                     input(type="text" placeholder="Special Needs" name="specialNeeds")
                 .fieldContainer
+                    label NOTES
+                    textarea(placeholder="Notes" name="notes")
+                .fieldContainer
                     label DISCLAIMER ACKNOWLEDGED
                     input(type="checkbox" name="disclaimer")
                 .fieldContainer
                     //- Used for determining which database collection to work with (users) 
                     input.hidden(type="text" value="recipient" name="type")
+                each field in settings.fields
+                    .fieldContainer
+                        label(style="text-transform:uppercase")=field
+                        input(type="text" name=field placeholder=field)
                 .clearFloat
         button#formSubmit(style="float:right; margin-top: 10px;") Submit
         button#addFamily.addFamilyButton(style="float:right; margin: 10px 10px 0 0 ") Add Family Member
@@ -104,6 +109,9 @@ block content
                 .fieldContainer
                     label SPECIAL NEEDS
                     input(type="text" placeholder="Special Needs" name="specialNeeds")
+                .fieldContainer
+                    label NOTES
+                    textarea(placeholder="Notes" name="notes")
                 .fieldContainer
                     label DISCLAIMER ACKNOWLEDGED
                     input(type="checkbox" name="disclaimer")

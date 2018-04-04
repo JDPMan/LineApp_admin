@@ -27,7 +27,10 @@ block content
                     else
                         .input-group.form-spacing(class=hidden)
                             label=field
-                            input.form-control(type="text" value=value name=field readOnly=readOnly)
+                            -var type = 'text';
+                            -if(field === 'disclaimer')
+                                -type = 'checkbox'
+                            input.form-control(type=type value=value name=field readOnly=readOnly)
                 
                 if typeof record.familyMembers !== 'undefined'
                     each member, index in record.familyMembers

@@ -62,7 +62,7 @@ exports.submitLM = function (req, res) {
 exports.submitLine = function (req, res) {
     var lineObj = req.body
     lineObj.dateCreated = new Date();
-    lineObj.capacity = parseInt(lineObj.capacity);
+    lineObj.capacity = parseInt(lineObj.capacity) || 0;
     lineObj.currentCapacity = parseInt(lineObj.capacity);
     dbClient.collection('lines').insert(lineObj, function (err, result) {
         // Add error checking here
@@ -104,23 +104,31 @@ exports.search = function(req,res){
 
 exports.getAdmins = function(req,res){
     dbClient.collection('admins').find({}).limit(20).toArray(function(err,results){
-        res.render('admin', { admins: results, currentlyLoggedIn: req.user})
+        dbClient.collection('settings').find({ name: "Admins" }).toArray(function (err, settings) {
+            res.render('admin', { admins: results, settings: settings[0], currentlyLoggedIn: req.user})
+        })
     })
 }
 exports.getLineManagers = function (req, res) {
     dbClient.collection('lineManagers').find({}).limit(20).toArray(function (err, results) {
-        res.render('lineManager', { lms: results, currentlyLoggedIn: req.user })
+        dbClient.collection('settings').find({ name: "Line Managers" }).toArray(function (err, settings) {
+            res.render('lineManager', { lms: results, settings: settings[0], currentlyLoggedIn: req.user })
+        })
     })
 }
 exports.getRecipients = function (req, res) {
     dbClient.collection('recipients').find({}).limit(20).toArray(function (err, results) {
-        res.render('recipient', { recipients: results, countries: countries.all, currentlyLoggedIn: req.user})
+        dbClient.collection('settings').find({name:"Recipients"}).toArray(function(err,settings){
+            res.render('recipient', { recipients: results, settings: settings[0], countries: countries.all, currentlyLoggedIn: req.user})
+        });
     })
 }
 
 exports.getLines = function (req, res) {
     dbClient.collection('lines').find({}).limit(20).toArray(function (err, results) {
-        res.render('line', { lines: results, currentlyLoggedIn: req.user })
+        dbClient.collection('settings').find({ name: "Lines" }).toArray(function (err, settings) {
+            res.render('line', { lines: results, settings: settings[0], currentlyLoggedIn: req.user })
+        })
     })
 }
 
@@ -131,8 +139,10 @@ exports.getRecord = function(req,res){
     id = mongo.ObjectId(id);
     var collection = req.query.type + 's';
     dbClient.collection(collection).find({_id:id}).toArray(function(err,result){
-        // Add error checking
-        res.render('editRecord', { record: result[0], countries: countries.all,})
+        dbClient.collection('settings').find({type:req.query.type}).toArray(function(err,settings){
+            // Add error checking
+            res.render('editRecord', { record: result[0], countries: countries.all, settings:settings[0]})
+        })
     })
 }
 exports.saveRecord = function(req,res){
@@ -164,6 +174,38 @@ exports.saveRecord = function(req,res){
 exports.retrieveRecipients = function(req,res){
     dbClient.collection('recipients').find({}).toArray(function(err,results){
         res.json(results);
+    })
+}
+
+exports.getSettings = function(req,res){
+    dbClient.collection('settings').find({}).toArray(function(err,settings){
+        if(settings.length === 0){
+            settings = [
+                { name: 'Recipients', type: 'recipient', fields: [] },
+                { name: 'Line Managers', type: 'lineManager', fields: [] },
+                { name: 'Lines', type: 'line', fields: [] },
+                { name: 'Admins', type: 'admin', fields: [] },
+            ]
+        }
+        res.render('settings',{settings:settings});
+    })
+}
+exports.saveSettings = function(req,res){
+    var settings = req.body.settings;
+    var bulk = dbClient.collection('settings').initializeUnorderedBulkOp();
+    for(var i = 0; i < settings.length; i++){
+        if(typeof settings[i].fields === 'undefined') settings[i].fields = [];
+        bulk.find({name:settings[i].name}).upsert().updateOne(settings[i]);
+    }
+    bulk.execute(function(err,result){
+        res.json({success:true});
+    });
+}
+exports.deleteSettings = function(req,res){
+    var type = req.body.type
+    var fieldToDelete = req.body.name;
+    dbClient.collection("settings").update({type:type},{$pull:{fields:fieldToDelete}},function(err,result){
+        res.json({success:true})
     })
 }
 

@@ -47,3 +47,10 @@ nav a:hover{
 button#searchModalButton{
     margin-right: 20px;
 }
+
+.field{
+    margin-bottom: 10px;
+}
+span.delete:hover{
+    cursor:pointer;
+}

@@ -17,4 +17,8 @@ module.exports = function (app) {
 
     app.get('/userManagement/editRecord/*',userServices.getRecord);
     app.post('/userManagement/saveRecord',userServices.saveRecord);
+
+    app.get('/userManagement/settings', userServices.getSettings);
+    app.post('/userManagement/saveSettings', userServices.saveSettings);
+    app.post('/userManagement/deleteSettings',userServices.deleteSettings);
 }
