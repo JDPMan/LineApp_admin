@@ -162,6 +162,8 @@ exports.getRecord = function(req,res){
 }
 exports.saveRecord = function(req,res){
     var record = {};
+    if(req.body.type === 'systemUser')
+        record.permissions = [];
     for (key in req.body) {
         var splitKey = key.split('-');
         if (splitKey.length > 1) { // Family Members
@@ -172,8 +174,6 @@ exports.saveRecord = function(req,res){
             record.familyMembers[splitKey[0]][splitKey[1]] = req.body[key];
         } else if(key === 'dateCreated' || key === 'dateOfBirth'){
             record[key] = new Date(req.body[key]);
-        // }else if(key === 'capacity' || key === 'currentCapacity'){
-        //     record[key] = parseInt(req.body[key]);
         }else if(req.body[key] === 'on'){
             if(typeof record.permissions === 'undefined') record.permissions = [];
             record.permissions.push(key)
@@ -181,12 +181,8 @@ exports.saveRecord = function(req,res){
             record[key] = req.body[key];
         }
     }
-
     var collection = record.type + 's';
     record._id = mongo.ObjectId(record._id)
-
-
-
     dbClient.collection(collection).save(record,function(err,result){
         res.status(200).json({success:true})
     })

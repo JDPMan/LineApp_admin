@@ -36,6 +36,8 @@ block content
                 -if(typeof record.permissions !== 'undefined')
                     .form-group.formSpacing
                         h3 Permissions
+                        button#checkAll.btn.btn-default Check All
+                        button#uncheckAll.btn.btn-default(style="margin-left:10px") Uncheck All
                     each permission in permissionTypes
                         .checkbox
                             -if(record.permissions.indexOf(permission.name) > -1)
@@ -72,6 +74,20 @@ block content
 
     script.
         $('input, select').on('change keypress',function(){
+            $('#save').removeClass('hidden');
+        })
+        $('#uncheckAll').on('click',function(e){
+            e.preventDefault()
+            $('.checkbox input[type="checkbox"]').each(function(){
+                $(this).prop("checked",false)
+            })
+            $('#save').removeClass('hidden');
+        })
+        $('#checkAll').on('click',function(e){
+            e.preventDefault()
+            $('.checkbox input[type="checkbox"]').each(function(){
+                $(this).prop("checked",true)
+            })
             $('#save').removeClass('hidden');
         })
 
