@@ -2,6 +2,19 @@ var mongo = require('mongodb');
 var countries = require('country-data').countries;
 var crypto = require('crypto');
 
+var permissionTypes = [
+    { name: 'createRecipients', label: 'Create Recipients' },
+    { name: 'editRecipients', label: 'Edit Recipients' },
+    { name: 'deleteRecipients', label: 'Delete Recipients' },
+    { name: 'createSystemUsers', label: 'Create System Users' },
+    { name: 'editSystemUsers', label: 'Edit System Users' },
+    { name: 'deleteSystemUsers', label: 'Delete System Users' },
+    { name: 'createLines', label: 'Create Lines' },
+    { name: 'editLines', label: 'Edit Lines' },
+    { name: 'deleteLines', label: 'Delete Lines' },
+    { name: 'viewReports', label: 'View Reports' },
+];
+
 exports.submitRecipient = function(req,res){
     var recipientObj = {};
     for (key in req.body) {
@@ -64,8 +77,8 @@ exports.submitLM = function (req, res) {
 exports.submitLine = function (req, res) {
     var lineObj = req.body
     lineObj.dateCreated = new Date();
-    lineObj.capacity = parseInt(lineObj.capacity) || 0;
-    lineObj.currentCapacity = parseInt(lineObj.capacity);
+    // lineObj.capacity = parseInt(lineObj.capacity) || 0;
+    // lineObj.currentCapacity = parseInt(lineObj.capacity);
     dbClient.collection('lines').insert(lineObj, function (err, result) {
         // Add error checking here
         res.status(200).json({ success: true, line: result.ops[0] })
@@ -143,7 +156,7 @@ exports.getRecord = function(req,res){
     dbClient.collection(collection).find({_id:id}).toArray(function(err,result){
         dbClient.collection('settings').find({type:req.query.type}).toArray(function(err,settings){
             // Add error checking
-            res.render('editRecord', { record: result[0], countries: countries.all, settings:settings[0]})
+            res.render('editRecord', { record: result[0], countries: countries.all, settings:settings[0], permissionTypes:permissionTypes})
         })
     })
 }
@@ -159,10 +172,16 @@ exports.saveRecord = function(req,res){
             record.familyMembers[splitKey[0]][splitKey[1]] = req.body[key];
         } else if(key === 'dateCreated' || key === 'dateOfBirth'){
             record[key] = new Date(req.body[key]);
+        // }else if(key === 'capacity' || key === 'currentCapacity'){
+        //     record[key] = parseInt(req.body[key]);
+        }else if(req.body[key] === 'on'){
+            if(typeof record.permissions === 'undefined') record.permissions = [];
+            record.permissions.push(key)
         }else{
             record[key] = req.body[key];
         }
     }
+
     var collection = record.type + 's';
     record._id = mongo.ObjectId(record._id)
 
@@ -228,4 +247,39 @@ var md5 = function (str) {
 var saltAndHash = function (pass, callback) {
     var salt = generateSalt();
     callback(salt + md5(pass + salt));
+}
+
+
+
+
+
+
+
+
+
+
+exports.getSystemUsers = function (req, res) {
+    dbClient.collection('systemUsers').find({}).limit(20).toArray(function (err, results) {
+        dbClient.collection('settings').find({ name: "SystemUsers" }).toArray(function (err, settings) {
+            res.render('SystemUsers', { users: results, settings: settings[0], countries: countries.all, currentlyLoggedIn: req.user, permissionTypes: permissionTypes })
+        });
+    })
+}
+exports.submitSystemUser = function (req, res) {
+    var userObj = {permissions:[]};
+    for(key in req.body){
+        if(req.body[key] === "on")
+            userObj.permissions.push(key);
+        else
+            userObj[key] = req.body[key];
+    }
+    saltAndHash(userObj.password, function (hash) {
+        userObj.password = hash;
+
+        userObj.dateCreated = new Date();
+        dbClient.collection('systemUsers').insert(userObj, function (err, result) {
+            // Add error checking here
+            res.status(200).json({ success: true, user: result.ops[0] })
+        })
+    })
 }

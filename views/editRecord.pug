@@ -8,6 +8,8 @@ block content
                 each value, field in record
                     if field === 'familyMembers'
                         -continue;
+                    if field === 'permissions'
+                        -continue;
                     -var readOnly = false;
                     -var hidden = '';
                     if field === '_id'
@@ -27,10 +29,19 @@ block content
                     else
                         .input-group.form-spacing(class=hidden)
                             label=field
-                            -var type = 'text';
+                            -var fieldType = 'text';
                             -if(field === 'disclaimer')
-                                -type = 'checkbox'
-                            input.form-control(type=type value=value name=field readOnly=readOnly)
+                                -fieldType = 'checkbox'
+                            input.form-control(type=fieldType value=value name=field readOnly=readOnly)
+                .form-group.formSpacing
+                    h3 Permissions
+                each permission in permissionTypes
+                    .checkbox
+                        -if(record.permissions.indexOf(permission.name) > -1)
+                            input(type="checkbox" name=permission.name checked)
+                        -else
+                            input(type="checkbox" name=permission.name)
+                        label(for=permission.name)=permission.label
                 
                 if typeof record.familyMembers !== 'undefined'
                     each member, index in record.familyMembers
@@ -52,11 +63,10 @@ block content
                                     .input-group.form-spacing(class=hidden)
                                         label=field
                                         input.form-control(type="text" value=value name=name readOnly=readOnly)
-
-
+                
         //- Add change password feature
 
-        button#save.hidden Save
+        button#save.btn.btn-default.hidden Save
 
 
     script.

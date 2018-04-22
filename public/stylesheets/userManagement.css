@@ -35,6 +35,15 @@
     float: left;
     padding: 15px;
 }
+.formSpacing{
+    padding: 0px 15px;
+}
+.checkbox input{
+    margin-left:20px !important;
+}
+.checkbox label{
+    padding-left: 40px !important;
+}
 
 .listUser{
     background-color: #E6E6E6;
@@ -56,4 +65,8 @@ p.strong{
 
 .usersList a{
     color: #000
+}
+
+.permissionsContainer .fieldContainer{
+    float:left;
 }

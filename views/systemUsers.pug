@@ -1,0 +1,124 @@
+extends layout
+
+block content
+    .userContainer
+        p.headerText ADD/CHANGE SYSTEM USER
+        .newUser
+            form#newSystemUserForm
+                .form-group.formSpacing
+                    label First Name
+                    input.form-control(placeholder="First Name" name="firstName")
+                .form-group.formSpacing
+                    label Last Name
+                    input.form-control(placeholder="Last Name" name="lastName")
+                .form-group.formSpacing
+                    label Username
+                    input.form-control(placeholder="Username" name="userName")
+                .form-group.formSpacing
+                    label Password
+                    input.form-control(type="password" placeholder="Password" name="password")
+                .form-group.formSpacing
+                    label Notes
+                    textarea.form-control(placeholder="Notes" name="notes")
+                .form-group.formSpacing.hidden
+                    input.form-control(name="type" value="systemUser")
+                -if(typeof settings !== 'undefined' && settings.length > 0)
+                    each field in settings.fields
+                        .form-group.formSpacing
+                            label=field
+                            input.form-control(name=field placeholder=field)
+                .form-group.formSpacing
+                    h3 Permissions
+                each permission in permissionTypes
+                    .checkbox
+                        input(type="checkbox" name=permission.name)
+                        label(for=permission.name)=permission.label
+                
+                
+        button#submitSystemUser.hidden(style="float:right;margin-top:10px;background-color:#9E9E9E") Submit
+        
+        p.headerText SYSTEM USERS
+        .usersList
+            each user in users
+                -var dateStr = "NA"
+                -if(typeof user.dateCreated !== 'undefined')
+                    -var year = user.dateCreated.getFullYear()
+                    -var month = user.dateCreated.getMonth()
+                    -var date = user.dateCreated.getDate()
+                    -dateStr = month + "/" + date + "/" + year
+                a(href="/userManagement/editRecord/"+user._id+'?type='+user.type)
+                    .listUser
+                        p.strong.firstName=user.firstName
+                        p.strong.lastName=user.lastName
+                        p._id=user._id
+                        p.dateCreated Created: #{dateStr}
+                        span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                        .clearFloat
+
+
+    a.userTemplate.hidden
+        .listUser
+            p.strong.firstName
+            p.strong.lastName
+            p._id
+            p.dateCreated
+            span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+            .clearFloat
+
+    script.
+        $('#submitSystemUser').on('click',function(){
+            debugger;
+            var data = $('form#newSystemUserForm').serialize();
+            debugger;
+            $.ajax({
+                type:"POST",
+                url:"/userManagement/submitSystemUser",
+                data:data,
+                success:function(data){
+                    // Add failure prompt
+                    toastr.success("System user has been successfully added!")
+                    appendToList(data.user);
+                },
+                dataType:"json"
+            })
+        })
+
+        $('input').on('change keypress',function(){
+            $('#submitSystemUser').removeClass('hidden');
+        })
+
+        $('.deleteUser').on('click',function(e){
+            e.preventDefault();
+            if(confirm("Are you sure you want to delete this user?")){
+                var id = $(this).parent().find('._id').text();
+                $(this).parent().remove()
+                var data = {_id: id, collection: "systemUsers"};
+                $.ajax({
+                    type:"POST",
+                    url:"/userManagement/deleteRecord",
+                    data:data,
+                    success:function(data){
+                        toastr.success("System user has been successfully deleted.")
+                    },
+                    dataType:"json"
+                })
+            }
+        })
+
+        function appendToList(user){
+            var $newUser = $('.userTemplate').clone().removeClass('userTemplate hidden')
+            for(key in user){
+                if(key === "dateCreated"){
+                    var date = new Date(user.dateCreated);
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var date = date.getDate();
+                    dateStr = month + "/" + date + "/" + year
+                    $newUser.find('.'+key).text("Created: " + dateStr)
+                }else
+                    $newUser.find('.'+key).text(user[key])
+            }
+            var href = '/userManagement/editRecord/' + user._id + '?type=' + user.type
+            $newUser.attr('href',href)
+            $('.usersList').append($newUser)
+        }

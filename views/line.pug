@@ -11,15 +11,15 @@ block content
                 .fieldContainer
                     label RESOURCE
                     input(type="text" placeholder="Resource" name="resource")
-                .fieldContainer
-                    label CAPACITY
-                    input(type="text" placeholder="Capacity" name="capacity")
+                //- .fieldContainer
+                //-     label CAPACITY
+                //-     input(type="text" placeholder="Capacity" name="capacity")
                 .fieldContainer
                     label OPEN/CLOSE
                     input(type="text" placeholder="Open - Close" name="openCloseTime")
-                .fieldContainer
-                    label ACCESS FREQUENCY (HOURS)
-                    input(type="text" placeholder="Access Frequency (hours)" name="accessFrequency")
+                //- .fieldContainer
+                //-     label ACCESS FREQUENCY (HOURS)
+                //-     input(type="text" placeholder="Access Frequency (hours)" name="accessFrequency")
                 .fieldContainer
                     label NOTES
                     textarea(placeholder="Notes" name="notes")
@@ -45,7 +45,7 @@ block content
                     .listUser
                         p.strong.name=line.name
                         p.strong.resource=line.resource
-                        p.strong.capacity Cap: #{line.capacity}
+                        //- p.strong.capacity Cap: #{line.capacity}
                         p._id=line._id
                         p.dateCreated Created: #{dateStr}
                         span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
@@ -55,7 +55,7 @@ block content
         .listUser
             p.strong.name
             p.strong.resource
-            p.strong.capacity
+            //- p.strong.capacity
             p._id
             p.dateCreated
             span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
@@ -109,8 +109,8 @@ block content
                     var date = date.getDate();
                     dateStr = month + "/" + date + "/" + year
                     $newLine.find('.'+key).text("Created: " + dateStr)
-                }else if(key === 'capacity'){
-                    $newLine.find('.'+key).text("Cap: " + line[key]);
+                //- }else if(key === 'capacity'){
+                //-     $newLine.find('.'+key).text("Cap: " + line[key]);
                 }else{
                     $newLine.find('.'+key).text(line[key]);
                 }

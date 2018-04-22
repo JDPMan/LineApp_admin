@@ -39,7 +39,7 @@ block content
                     label DISCLAIMER ACKNOWLEDGED
                     input(type="checkbox" name="disclaimer")
                 .fieldContainer
-                    //- Used for determining which database collection to work with (users) 
+                    //- Used for determining which database collection to work with (recipients) 
                     input.hidden(type="text" value="recipient" name="type")
                 each field in settings.fields
                     .fieldContainer
@@ -62,14 +62,16 @@ block content
                 -var dateStrDC = "NA"
                 -var dateStrDOB = "NA"
                 -if(typeof recipient.dateCreated !== 'undefined' && recipient.dateCreated !== "")
-                    -var year = recipient.dateCreated.getFullYear()
-                    -var month = recipient.dateCreated.getMonth()
-                    -var date = recipient.dateCreated.getDate()
+                    -var dateCreated = new Date(recipient.dateCreated)
+                    -var year = dateCreated.getFullYear()
+                    -var month = dateCreated.getMonth()
+                    -var date = dateCreated.getDate()
                     -dateStrDC = month + "/" + date + "/" + year
                 -if(typeof recipient.dateOfBirth !== 'undefined' && recipient.dateOfBirth !== "")
-                    -var year = recipient.dateOfBirth.getFullYear()
-                    -var month = recipient.dateOfBirth.getMonth()
-                    -var date = recipient.dateOfBirth.getDate()
+                    -var dateOfBirth = new Date(recipient.dateOfBirth)
+                    -var year = dateOfBirth.getFullYear()
+                    -var month = dateOfBirth.getMonth()
+                    -var date = dateOfBirth.getDate()
                     -dateStrDOB = month + "/" + date + "/" + year
                 a(href="/userManagement/editRecord/"+recipient._id+'?type='+recipient.type)
                     .listUser

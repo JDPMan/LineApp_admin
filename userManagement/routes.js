@@ -21,4 +21,8 @@ module.exports = function (app) {
     app.get('/userManagement/settings', userServices.getSettings);
     app.post('/userManagement/saveSettings', userServices.saveSettings);
     app.post('/userManagement/deleteSettings',userServices.deleteSettings);
+
+
+    app.get('/userManagement/systemUsers',userServices.getSystemUsers);
+    app.post('/userManagement/submitSystemUser',userServices.submitSystemUser)
 }

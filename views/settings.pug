@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    h2 Add Custom Fields
     each collection in settings
         -var typeContainerId = collection.type + 'Container'
         div.type(id=typeContainerId name=collection.name type=collection.type)
@@ -9,7 +10,6 @@ block content
             each field in collection.fields
                 input.field(type="text" value=field)
                 span.delete(style="padding: 10px" type=collection.type name=field) x
-                //- Place editable field here
         button.newFieldButton.btn.btn-success(id=collection.type) Add New Field
         hr
 
