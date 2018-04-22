@@ -29,6 +29,8 @@ block content
                             input.form-control(name=field placeholder=field)
                 .form-group.formSpacing
                     h3 Permissions
+                    button#checkAll.btn.btn-default Check All
+                    button#uncheckAll.btn.btn-default(style="margin-left:10px") Uncheck All
                 each permission in permissionTypes
                     .checkbox
                         input(type="checkbox" name=permission.name)
@@ -68,9 +70,7 @@ block content
 
     script.
         $('#submitSystemUser').on('click',function(){
-            debugger;
             var data = $('form#newSystemUserForm').serialize();
-            debugger;
             $.ajax({
                 type:"POST",
                 url:"/userManagement/submitSystemUser",
@@ -81,6 +81,18 @@ block content
                     appendToList(data.user);
                 },
                 dataType:"json"
+            })
+        })
+        $('#uncheckAll').on('click',function(e){
+            e.preventDefault()
+            $('.checkbox input[type="checkbox"]').each(function(){
+                $(this).prop("checked",false)
+            })
+        })
+        $('#checkAll').on('click',function(e){
+            e.preventDefault()
+            $('.checkbox input[type="checkbox"]').each(function(){
+                $(this).prop("checked",true)
             })
         })
 
