@@ -17,7 +17,7 @@ block content
                     if field === 'password' || field == 'type'
                         -hidden = 'hidden';
                     if field === 'country'
-                        .input-group.form-spacing
+                        .form-group.formSpacing
                             label COUNTRY
                             select.form-control(type="text" name="country")
                                 option(value="") - Country -
@@ -27,21 +27,22 @@ block content
                                     else
                                         option(value=country.name) #{country.name}
                     else
-                        .input-group.form-spacing(class=hidden)
+                        .form-group.formSpacing(class=hidden)
                             label=field
                             -var fieldType = 'text';
                             -if(field === 'disclaimer')
                                 -fieldType = 'checkbox'
                             input.form-control(type=fieldType value=value name=field readOnly=readOnly)
-                .form-group.formSpacing
-                    h3 Permissions
-                each permission in permissionTypes
-                    .checkbox
-                        -if(record.permissions.indexOf(permission.name) > -1)
-                            input(type="checkbox" name=permission.name checked)
-                        -else
-                            input(type="checkbox" name=permission.name)
-                        label(for=permission.name)=permission.label
+                -if(typeof record.permissions !== 'undefined')
+                    .form-group.formSpacing
+                        h3 Permissions
+                    each permission in permissionTypes
+                        .checkbox
+                            -if(record.permissions.indexOf(permission.name) > -1)
+                                input(type="checkbox" name=permission.name checked)
+                            -else
+                                input(type="checkbox" name=permission.name)
+                            label(for=permission.name)=permission.label
                 
                 if typeof record.familyMembers !== 'undefined'
                     each member, index in record.familyMembers
@@ -50,7 +51,7 @@ block content
                             each value, field in member
                                 -var name = '' + index + '-' + field
                                 if field === 'country'
-                                    .input-group.form-spacing
+                                    .input-group.formSpacing
                                         label COUNTRY
                                         select.form-control(type="text" name=name)
                                             option(value="") - Country -
@@ -60,13 +61,13 @@ block content
                                                 else
                                                     option(value=country.name) #{country.name}
                                 else
-                                    .input-group.form-spacing(class=hidden)
+                                    .input-group.formSpacing(class=hidden)
                                         label=field
                                         input.form-control(type="text" value=value name=name readOnly=readOnly)
                 
         //- Add change password feature
 
-        button#save.btn.btn-default.hidden Save
+        button#save.btn.btn-success.hidden Save
 
 
     script.

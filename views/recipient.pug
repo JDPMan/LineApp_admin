@@ -5,49 +5,49 @@ block content
         p.headerText ADD/CHANGE RECIPIENT
         .newUser
             form#newUserForm(action="/submit")
-                .fieldContainer
-                    label FIRST NAME
-                    input(type="text" placeholder="First Name" name="firstName")
-                .fieldContainer
-                    label LAST NAME
-                    input(type="text" placeholder="Last Name" name="lastName")
-                .fieldContainer
-                    label COUNTRY
-                    select(type="text" placeholder="Country" name="country")
+                .form-group.formSpacing
+                    label First Name
+                    input.form-control(type="text" placeholder="First Name" name="firstName")
+                .form-group.formSpacing
+                    label Last Name
+                    input.form-control(type="text" placeholder="Last Name" name="lastName")
+                .form-group.formSpacing
+                    label Country
+                    select.form-control(type="text" placeholder="Country" name="country")
                         option(value="") - Country -
                         each country in countries
                             option(val=country.name) #{country.name}
-                .fieldContainer
-                    label LANGUAGE(S)
-                    input(type="text" placeholder="Language(s)" name="languages")
-                .fieldContainer
-                    label DATE OF BIRTH
-                    input#datepicker(type="text" placeholder="Date of Birth" name="dateOfBirth")
-                .fieldContainer
-                    label CASE NUMBER
-                    input(type="text" placeholder="Case Number" name='caseNumber')
-                .fieldContainer
-                    label HOUSING LOCATION
-                    input(type="text" placeholder="Housing Location" name="housingLocation")
-                .fieldContainer
-                    label SPECIAL NEEDS
-                    input(type="text" placeholder="Special Needs" name="specialNeeds")
-                .fieldContainer
-                    label NOTES
-                    textarea(placeholder="Notes" name="notes")
-                .fieldContainer
-                    label DISCLAIMER ACKNOWLEDGED
+                .form-group.formSpacing
+                    label Language(s)
+                    input.form-control(type="text" placeholder="Language(s)" name="languages")
+                .form-group.formSpacing
+                    label Date of Birth
+                    input.form-control#datepicker(type="text" placeholder="Date of Birth" name="dateOfBirth")
+                .form-group.formSpacing
+                    label Case Number
+                    input.form-control(type="text" placeholder="Case Number" name='caseNumber')
+                .form-group.formSpacing
+                    label Housing Location
+                    input.form-control(type="text" placeholder="Housing Location" name="housingLocation")
+                .form-group.formSpacing
+                    label Special Needs
+                    input.form-control(type="text" placeholder="Special Needs" name="specialNeeds")
+                .form-group.formSpacing
+                    label Notes
+                    textarea.form-control(placeholder="Notes" name="notes")
+                .checkbox
                     input(type="checkbox" name="disclaimer")
-                .fieldContainer
+                    label Disclaimer Acknowledged
+                .form-group.formSpacing
                     //- Used for determining which database collection to work with (recipients) 
                     input.hidden(type="text" value="recipient" name="type")
                 each field in settings.fields
-                    .fieldContainer
+                    .form-group.formSpacing
                         label(style="text-transform:uppercase")=field
-                        input(type="text" name=field placeholder=field)
+                        input.form-control(type="text" name=field placeholder=field)
                 .clearFloat
-        button#formSubmit(style="float:right; margin-top: 10px;") Submit
-        button#addFamily.addFamilyButton(style="float:right; margin: 10px 10px 0 0 ") Add Family Member
+        button#formSubmit.btn.btn-success.hidden(style="float:right; margin-top: 10px;") Submit
+        button#addFamily.btn.btn-success.addFamilyButton(style="float:right; margin: 10px 10px 0 0 ") Add Family Member
 
         .familyMembersContainer.hidden
             p.headerText ADD/CHANGE FAMILY MEMBERS
@@ -85,39 +85,40 @@ block content
                         p.housingLocation Housing Location: #{recipient.housingLocation}
                         p.specialNeeds Special Needs: #{recipient.specialNeeds}
                         p.hidden._id=recipient._id
-                        span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                        button.deleteUser.btn.btn-danger(style="float:right;margin-top:12px;margin-right:10px") Delete
+                        //- span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
                         .clearFloat
 
         .familyTemplate.newUser.hidden(style="margin-top:20px;")
             form
-                .fieldContainer
-                    label FIRST NAME
-                    input(type="text" placeholder="First Name" name="firstName")
-                .fieldContainer
-                    label LAST NAME
-                    input(type="text" placeholder="Last Name" name="lastName")
-                .fieldContainer
-                    label COUNTRY
-                    select(type="text" placeholder="Country" name="country")
+                .form-group.formSpacing
+                    label First Name
+                    input.form-control(type="text" placeholder="First Name" name="firstName")
+                .form-group.formSpacing
+                    label Last Name
+                    input.form-control(type="text" placeholder="Last Name" name="lastName")
+                .form-group.formSpacing
+                    label Country
+                    select.form-control(type="text" placeholder="Country" name="country")
                         option(value="") - Country -
                         each country in countries
                             option(val=country) #{country.name}
-                .fieldContainer
-                    label LANGUAGE(S)
-                    input(type="text" placeholder="Language(s)" name="languages")
-                .fieldContainer
-                    label DATE OF BIRTH
-                    input#datepicker(type="text" placeholder="Date of Birth" name="dateOfBirth")
-                .fieldContainer
-                    label SPECIAL NEEDS
-                    input(type="text" placeholder="Special Needs" name="specialNeeds")
-                .fieldContainer
-                    label NOTES
-                    textarea(placeholder="Notes" name="notes")
-                .fieldContainer
-                    label DISCLAIMER ACKNOWLEDGED
+                .form-group.formSpacing
+                    label Language(s)
+                    input.form-control(type="text" placeholder="Language(s)" name="languages")
+                .form-group.formSpacing
+                    label Date of Birth
+                    input.form-control#datepicker(type="text" placeholder="Date of Birth" name="dateOfBirth")
+                .form-group.formSpacing
+                    label Special Needs
+                    input.form-control(type="text" placeholder="Special Needs" name="specialNeeds")
+                .form-group.formSpacing
+                    label Notes
+                    textarea.form-control(placeholder="Notes" name="notes")
+                .checkbox
                     input(type="checkbox" name="disclaimer")
-                .fieldContainer
+                    label Disclaimer Acknowledged
+                .form-group.formSpacing
                     //- Used for determining which database collection to insert to (recipients) 
                     input.hidden(type="text" value="recipient" name="type")
                 .clearFloat
@@ -135,7 +136,7 @@ block content
                 p.housingLocation
                 p.specialNeeds
                 p.hidden._id
-                span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                button.deleteUser.btn.btn-danger(style="float:right;margin-top:12px;margin-right:10px") Delete
                 .clearFloat
 
     script(type='text/javascript').
@@ -146,6 +147,10 @@ block content
                 closeOnDateSelect:true,
             });
         });
+
+        $('input, textarea').on('change keypress',function(){
+            $('#formSubmit').removeClass('hidden');
+        })
 
         $('#addFamily, #addAnother').on('click',function(){
             $('.familyMembersContainer').removeClass('hidden');

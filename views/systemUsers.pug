@@ -35,7 +35,7 @@ block content
                         label(for=permission.name)=permission.label
                 
                 
-        button#submitSystemUser.hidden(style="float:right;margin-top:10px;background-color:#9E9E9E") Submit
+        button#submitSystemUser.btn.btn-success.hidden(style="float:right;margin-top:10px;") Submit
         
         p.headerText SYSTEM USERS
         .usersList
@@ -52,7 +52,8 @@ block content
                         p.strong.lastName=user.lastName
                         p._id=user._id
                         p.dateCreated Created: #{dateStr}
-                        span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                        button.deleteUser.btn.btn-danger(style="float:right;margin-top:12px;margin-right:10px") Delete
+                        //- span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
                         .clearFloat
 
 
@@ -62,7 +63,7 @@ block content
             p.strong.lastName
             p._id
             p.dateCreated
-            span.deleteUser(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+            button.deleteUser.btn.btn-danger(style="float:right;margin-top:12px;margin-right:10px") Delete
             .clearFloat
 
     script.
@@ -83,7 +84,7 @@ block content
             })
         })
 
-        $('input').on('change keypress',function(){
+        $('input, textarea').on('change keypress',function(){
             $('#submitSystemUser').removeClass('hidden');
         })
 

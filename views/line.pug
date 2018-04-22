@@ -5,32 +5,32 @@ block content
         p.headerText ADD/CHANGE LINE
         .newUser
             form#newUserForm(action="/submitLine")
-                .fieldContainer
-                    label LINE NAME
-                    input(type="text" placeholder="Line Name" name="name")
-                .fieldContainer
-                    label RESOURCE
-                    input(type="text" placeholder="Resource" name="resource")
-                //- .fieldContainer
+                .form-group.formSpacing
+                    label Line Name
+                    input.form-control(type="text" placeholder="Line Name" name="name")
+                .form-group.formSpacing
+                    label Resource
+                    input.form-control(type="text" placeholder="Resource" name="resource")
+                //- .form-group.formSpacing
                 //-     label CAPACITY
-                //-     input(type="text" placeholder="Capacity" name="capacity")
-                .fieldContainer
-                    label OPEN/CLOSE
-                    input(type="text" placeholder="Open - Close" name="openCloseTime")
-                //- .fieldContainer
+                //-     input.form-control(type="text" placeholder="Capacity" name="capacity")
+                .form-group.formSpacing
+                    label Open/Close
+                    input.form-control(type="text" placeholder="Open - Close" name="openCloseTime")
+                //- .form-group.formSpacing
                 //-     label ACCESS FREQUENCY (HOURS)
-                //-     input(type="text" placeholder="Access Frequency (hours)" name="accessFrequency")
-                .fieldContainer
-                    label NOTES
-                    textarea(placeholder="Notes" name="notes")
+                //-     input.form-control(type="text" placeholder="Access Frequency (hours)" name="accessFrequency")
+                .form-group.formSpacing
+                    label Notes
+                    textarea.form-control(placeholder="Notes" name="notes")
                 each field in settings.fields
-                    .fieldContainer
+                    .form-group.formSpacing
                         label(style="text-transform:uppercase")=field
-                        input(type="text" name=field placeholder=field)
-                .fieldContainer.hidden
-                    input(type="text" name="type" value="line")
+                        input.form-control(type="text" name=field placeholder=field)
+                .form-group.formSpacing.hidden
+                    input.form-control(type="text" name="type" value="line")
                 .clearFloat
-        button#submitLine.hidden(style="float:right;margin-top:10px;background-color:#9E9E9E") Submit
+        button#submitLine.btn.btn-success.hidden(style="float:right;margin-top:10px;") Submit
         
         p.headerText LINES
         .usersList
@@ -48,7 +48,7 @@ block content
                         //- p.strong.capacity Cap: #{line.capacity}
                         p._id=line._id
                         p.dateCreated Created: #{dateStr}
-                        span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+                        button.deleteLine.btn.btn-danger(style="float:right;margin-top:12px;margin-right:10px") Delete
                         .clearFloat
 
     a.lineTemplate.hidden
@@ -58,7 +58,7 @@ block content
             //- p.strong.capacity
             p._id
             p.dateCreated
-            span.deleteLine(style="float:right; font-size: 30px; padding-right: 20px;") &times;
+            button.deleteLine.btn.btn-danger(style="float:right;margin-top:12px;margin-right:10px") Delete
             .clearFloat
     
     script.
@@ -77,7 +77,7 @@ block content
             })
         })
 
-        $('input').on('change keypress',function(){
+        $('input, textarea').on('change keypress',function(){
             $('#submitLine').removeClass('hidden');
         })
 
