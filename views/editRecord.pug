@@ -18,7 +18,7 @@ block content
                         -hidden = 'hidden';
                     if field === 'country'
                         .form-group.formSpacing
-                            label COUNTRY
+                            label Country
                             select.form-control(type="text" name="country")
                                 option(value="") - Country -
                                 each country in countries
@@ -28,7 +28,7 @@ block content
                                         option(value=country.name) #{country.name}
                     else
                         .form-group.formSpacing(class=hidden)
-                            label=field
+                            label=field.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); })
                             -var fieldType = 'text';
                             -if(field === 'disclaimer')
                                 -fieldType = 'checkbox'
@@ -54,7 +54,7 @@ block content
                                 -var name = '' + index + '-' + field
                                 if field === 'country'
                                     .input-group.formSpacing
-                                        label COUNTRY
+                                        label Country
                                         select.form-control(type="text" name=name)
                                             option(value="") - Country -
                                             each country in countries
@@ -64,7 +64,7 @@ block content
                                                     option(value=country.name) #{country.name}
                                 else
                                     .input-group.formSpacing(class=hidden)
-                                        label=field
+                                        label=field.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); })
                                         input.form-control(type="text" value=value name=name readOnly=readOnly)
                 
         //- Add change password feature
