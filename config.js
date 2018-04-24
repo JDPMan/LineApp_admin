@@ -1,7 +1,7 @@
 var config = {};
-
+var compIP = require("ip").address();
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000,
-    ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
+    ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || compIP, // Computers ip address
     mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
     mongoURLLabel = "";
 

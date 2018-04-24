@@ -250,7 +250,6 @@ exports.saveRecipient = function(req,res){
         record.familyMembers[i].country = record.familyMembers[i].country.name;
     }
     record.dateCreated = new Date();
-    return;
     dbClient.collection('recipients').insert(record,function(err,result){
         res.json({success:true})
     })
