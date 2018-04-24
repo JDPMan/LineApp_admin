@@ -24,13 +24,11 @@ block content
 
     script.
         $('.newFieldButton').on('click',function(){
-            //- debugger;
             $('#save').removeClass('hidden');
             var type = $(this).attr('id');
             $newField = $('.newFieldTemplate').clone().removeClass('newFieldTemplate hidden');
             $newField.find('input').addClass('field');
             $('#' + type + 'Container').append($newField)
-            //- debugger;
         })
         $('.delete').on('click',function(){
             var type = $(this).attr('type');
