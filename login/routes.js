@@ -1,5 +1,5 @@
 var Strategy = require('passport-local').Strategy;
-
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 module.exports = function(app, passport){
     app.get('/login',
         function (req, res) {
@@ -17,4 +17,5 @@ module.exports = function(app, passport){
             req.logout();
             res.redirect('/');
         });
+    app.all('/*', ensureLoggedIn('/login'));
 }

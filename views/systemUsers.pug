@@ -22,7 +22,7 @@ block content
                     textarea.form-control(placeholder="Notes" name="notes")
                 .form-group.formSpacing.hidden
                     input.form-control(name="type" value="systemUser")
-                -if(typeof settings !== 'undefined' && settings.length > 0)
+                -if(typeof settings !== 'undefined' && settings.fields.length > 0)
                     each field in settings.fields
                         .form-group.formSpacing
                             label=field

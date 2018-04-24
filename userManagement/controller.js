@@ -102,7 +102,7 @@ exports.search = function(req,res){
     if (typeof req.query.userID !== 'undefined' && req.query.userID !== "")
         req.query._id = req.query.userID
     dbClient.collection(collection).find(searchObj).toArray(function (err, results) {
-        res.render('searchResults', { results: results, type: typeReference[collection] , collection: collection});
+        res.render('searchResults', { results: results, type: typeReference[collection], collection: collection, currentlyLoggedIn: req.user});
     })
 }
 
@@ -145,7 +145,7 @@ exports.getRecord = function(req,res){
     dbClient.collection(collection).find({_id:id}).toArray(function(err,result){
         dbClient.collection('settings').find({type:req.query.type}).toArray(function(err,settings){
             // Add error checking
-            res.render('editRecord', { record: result[0], countries: countries.all, settings:settings[0], permissionTypes:permissionTypes})
+            res.render('editRecord', { record: result[0], countries: countries.all, settings: settings[0], permissionTypes: permissionTypes, currentlyLoggedIn: req.user})
         })
     })
 }
@@ -188,12 +188,11 @@ exports.getSettings = function(req,res){
         if(settings.length === 0){
             settings = [
                 { name: 'Recipients', type: 'recipient', fields: [] },
-                { name: 'Line Managers', type: 'lineManager', fields: [] },
                 { name: 'Lines', type: 'line', fields: [] },
-                { name: 'Admins', type: 'admin', fields: [] },
+                { name: 'System Users', type: 'systemUser', fields: [] },
             ]
         }
-        res.render('settings',{settings:settings});
+        res.render('settings', { settings: settings, currentlyLoggedIn: req.user});
     })
 }
 exports.saveSettings = function(req,res){
@@ -245,7 +244,7 @@ var saltAndHash = function (pass, callback) {
 
 exports.getSystemUsers = function (req, res) {
     dbClient.collection('systemUsers').find({}).limit(20).toArray(function (err, results) {
-        dbClient.collection('settings').find({ name: "SystemUsers" }).toArray(function (err, settings) {
+        dbClient.collection('settings').find({ name: "System Users" }).toArray(function (err, settings) {
             res.render('SystemUsers', { users: results, settings: settings[0], countries: countries.all, currentlyLoggedIn: req.user, permissionTypes: permissionTypes })
         });
     })

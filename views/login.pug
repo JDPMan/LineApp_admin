@@ -1,17 +1,27 @@
-extends ./layout
+doctype html
+html
+    head
+        script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js",type="text/javascript")
 
-block content
-    .loginContainer(style="width: 310px; height: 385px; border: 1px solid black; margin: 0 auto; margin-top: 75px;")
-        .loginHeaderText(style="padding: 30px; line-height: 18px;")
-            p(style="text-align: center; font-size: 22px; font-weight: 800") CHECK-IN
-            p(style="text-align: center; font-size: 22px; font-weight: 800") Admin Login
-            
-        form#loginForm(action="/login" method="post" style="padding: 20px 40px 0 40px")
-            label(style="display: inline-block; padding-bottom: 10px;") username
-            input(type="text" name="username" style="display: block; width: 100%; margin-bottom: 15px;")
-            label(style="display: inline-block; padding-bottom: 10px;") password
-            input(type="password" name="password" style="display: block; width: 100%; margin-bottom: 15px;")
-            span.loginSubmit.glyphicon.glyphicon-arrow-right(style="color: #0F7F12; float: right; font-size: 40px; margin-top: 20px")
+        link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", rel="stylesheet")
+        link(rel="stylesheet",href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css")
+		
+        script(src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js",type="text/javascript")
+        block head
+
+    body
+        div
+            .loginContainer(style="width: 310px; height: 385px; border: 1px solid black; margin: 0 auto; margin-top: 75px;")
+                .loginHeaderText(style="padding: 30px; line-height: 18px;")
+                    p(style="text-align: center; font-size: 22px; font-weight: 800") CHECK-IN
+                    p(style="text-align: center; font-size: 22px; font-weight: 800") Admin Login
+                    
+                form#loginForm(action="/login" method="post" style="padding: 20px 40px 0 40px")
+                    label(style="display: inline-block; padding-bottom: 10px;") username
+                    input(type="text" name="username" style="display: block; width: 100%; margin-bottom: 15px;")
+                    label(style="display: inline-block; padding-bottom: 10px;") password
+                    input(type="password" name="password" style="display: block; width: 100%; margin-bottom: 15px;")
+                    span.loginSubmit.glyphicon.glyphicon-arrow-right(style="color: #0F7F12; float: right; font-size: 40px; margin-top: 20px")
     
     script.
         $('.loginSubmit').on('click',function(){

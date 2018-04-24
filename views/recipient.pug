@@ -41,10 +41,11 @@ block content
                 .form-group.formSpacing
                     //- Used for determining which database collection to work with (recipients) 
                     input.hidden(type="text" value="recipient" name="type")
-                each field in settings.fields
-                    .form-group.formSpacing
-                        label(style="text-transform:uppercase")=field
-                        input.form-control(type="text" name=field placeholder=field)
+                -if(typeof settings !== 'undefined' && settings.fields.length > 0)
+                    each field in settings.fields
+                        .form-group.formSpacing
+                            label(style="text-transform:uppercase")=field
+                            input.form-control(type="text" name=field placeholder=field)
                 .clearFloat
         button#formSubmit.btn.btn-success.hidden(style="float:right; margin-top: 10px;") Submit
         button#addFamily.btn.btn-success.addFamilyButton(style="float:right; margin: 10px 10px 0 0 ") Add Family Member

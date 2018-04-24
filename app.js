@@ -38,7 +38,7 @@ mongoClient.connect(config.mongodb_url, {}, function (err, db) {
 });
 
 // List of routes
+require('./login/routes')(app, passport); // This one must be first
 require('./routes')(app);
 require('./userManagement/routes')(app);
-require('./login/routes')(app, passport);
 require('./mobileAPICalls/routes')(app,passport);

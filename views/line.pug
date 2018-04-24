@@ -11,22 +11,17 @@ block content
                 .form-group.formSpacing
                     label Resource
                     input.form-control(type="text" placeholder="Resource" name="resource")
-                //- .form-group.formSpacing
-                //-     label CAPACITY
-                //-     input.form-control(type="text" placeholder="Capacity" name="capacity")
                 .form-group.formSpacing
                     label Open/Close
                     input.form-control(type="text" placeholder="Open - Close" name="openCloseTime")
-                //- .form-group.formSpacing
-                //-     label ACCESS FREQUENCY (HOURS)
-                //-     input.form-control(type="text" placeholder="Access Frequency (hours)" name="accessFrequency")
                 .form-group.formSpacing
                     label Notes
                     textarea.form-control(placeholder="Notes" name="notes")
-                each field in settings.fields
-                    .form-group.formSpacing
-                        label(style="text-transform:uppercase")=field
-                        input.form-control(type="text" name=field placeholder=field)
+                -if(typeof settings !== 'undefined' && settings.fields.length > 0)
+                    each field in settings.fields
+                        .form-group.formSpacing
+                            label(style="text-transform:uppercase")=field
+                            input.form-control(type="text" name=field placeholder=field)
                 .form-group.formSpacing.hidden
                     input.form-control(type="text" name="type" value="line")
                 .clearFloat
@@ -45,7 +40,6 @@ block content
                     .listUser
                         p.strong.name=line.name
                         p.strong.resource=line.resource
-                        //- p.strong.capacity Cap: #{line.capacity}
                         p._id=line._id
                         p.dateCreated Created: #{dateStr}
                         button.deleteLine.btn.btn-danger(style="float:right;margin-top:12px;margin-right:10px") Delete
@@ -55,7 +49,6 @@ block content
         .listUser
             p.strong.name
             p.strong.resource
-            //- p.strong.capacity
             p._id
             p.dateCreated
             button.deleteLine.btn.btn-danger(style="float:right;margin-top:12px;margin-right:10px") Delete
@@ -109,8 +102,6 @@ block content
                     var date = date.getDate();
                     dateStr = month + "/" + date + "/" + year
                     $newLine.find('.'+key).text("Created: " + dateStr)
-                //- }else if(key === 'capacity'){
-                //-     $newLine.find('.'+key).text("Cap: " + line[key]);
                 }else{
                     $newLine.find('.'+key).text(line[key]);
                 }

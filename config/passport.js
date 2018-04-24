@@ -12,7 +12,7 @@ module.exports = function (passport) {
     // will be set at `req.user` in route handlers after authentication.
     passport.use(new LocalStrategy(
         function (userName, password, cb) {
-            dbClient.collection('admins').find({ userName: userName }).toArray(function (err, user) {
+            dbClient.collection('systemUsers').find({ userName: userName }).toArray(function (err, user) {
                 // db.users.findByUsername(username, function (err, user) {
                 if (err) { return cb(err); }
                 if (!user) { return cb(null, false); }
@@ -34,7 +34,7 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser(function (id, cb) {
-        dbClient.collection('admins').find({ _id: mongo.ObjectID(id) }).toArray(function (err, user) {
+        dbClient.collection('systemUsers').find({ _id: mongo.ObjectID(id) }).toArray(function (err, user) {
             // db.users.findById(id, function (err, user) {
             if (err) { return cb(err); }
             cb(null, user[0]);

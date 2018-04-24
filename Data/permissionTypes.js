@@ -12,5 +12,6 @@ module.exports = [
     { name: 'viewLines', label: 'View Lines' },
     { name: 'editLines', label: 'Edit Lines' },
     { name: 'deleteLines', label: 'Delete Lines' },
+    { name: 'editSettings', label: 'Edit Settings' },
     { name: 'viewReports', label: 'View Reports' },
 ];
