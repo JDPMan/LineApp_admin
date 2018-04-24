@@ -2,18 +2,7 @@ var mongo = require('mongodb');
 var countries = require('country-data').countries;
 var crypto = require('crypto');
 
-var permissionTypes = [
-    { name: 'createRecipients', label: 'Create Recipients' },
-    { name: 'editRecipients', label: 'Edit Recipients' },
-    { name: 'deleteRecipients', label: 'Delete Recipients' },
-    { name: 'createSystemUsers', label: 'Create System Users' },
-    { name: 'editSystemUsers', label: 'Edit System Users' },
-    { name: 'deleteSystemUsers', label: 'Delete System Users' },
-    { name: 'createLines', label: 'Create Lines' },
-    { name: 'editLines', label: 'Edit Lines' },
-    { name: 'deleteLines', label: 'Delete Lines' },
-    { name: 'viewReports', label: 'View Reports' },
-];
+var permissionTypes = require('../Data/permissionTypes')
 
 exports.submitRecipient = function(req,res){
     var recipientObj = {};

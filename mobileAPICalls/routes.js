@@ -12,4 +12,5 @@ module.exports = function (app, passport) {
     app.post('/mobileAPI/uploadQueue',APIServices.uploadQueue);
     app.get('/mobileAPI/validateAndRetrieveLastAction',APIServices.validateAndRetrieveLastAction);
     app.post('/mobileAPI/logAction',APIServices.logAction);
+    app.get('/mobileAPI/getPermissionTypes',APIServices.getPermissionTypes);
 }
