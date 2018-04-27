@@ -278,7 +278,7 @@ exports.searchFMD = function(req,res){
         if(results.length > 0){
             res.json({fmdFound:true, recipient: results[0]})
         }else{
-            res.json({fmdFOund:false})
+            res.json({fmdFound:false})
         }
     })
 }
