@@ -6,13 +6,13 @@
                     span(style="font-weight:600;") CHECK-IN &nbsp;
                 span(style="font-weight:200") ADMINISTRATION ASSISTANT
         div(style="display:table-cell; vertical-align:middle;text-align:right; padding-right: 15px;")
-            button#searchModalButton.btn.btn-default(type="button" data-toggle="modal" data-target="#searchModal")
-                span.glyphicon.glyphicon-search(style="padding-right: 5px;")
-                | Search
+            //- button#searchModalButton.btn.btn-default(type="button" data-toggle="modal" data-target="#searchModal")
+            //-     span.glyphicon.glyphicon-search(style="padding-right: 5px;")
+            //-     | Search
             -if(typeof currentlyLoggedIn !== 'undefined')
                 p(style="margin:0; float: right") #{currentlyLoggedIn.firstName + " " + currentlyLoggedIn.lastName} &nbsp;
                     a(href="/logout")
-                        span.logout [logout]
+                        button.btn.btn-default Logout
             -else
                 a(href="/login")
                     span.login Login
