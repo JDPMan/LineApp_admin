@@ -14,4 +14,5 @@ module.exports = function (app, passport) {
     app.post('/mobileAPI/logAction',APIServices.logAction);
     app.get('/mobileAPI/getPermissionTypes',APIServices.getPermissionTypes);
     app.get('/mobileAPI/searchFMD',APIServices.searchFMD);
+    app.get('/mobileAPI/returnAllFMDs',APIServices.returnAllFMDs)
 }

@@ -283,6 +283,14 @@ exports.searchFMD = function(req,res){
     })
 }
 
+exports.returnAllFMDs = function(req,res){
+    dbClient.collection('recipients').find({fmd:{$exists:true}},{_id:1,fmd:1}).toArray(function(err,fmdArr){
+        if(err)
+            return res.json({success:false})
+        res.json({success:true,fmdArray:fmdArr})
+    })
+}
+
 
 generateLineObj = function(lineObj){
     // lineObj.currentCapacity = parseInt(lineObj.currentCapacity);
