@@ -271,6 +271,17 @@ exports.saveRecord = function(req,res){
         res.json({success:true,record:record.value})
     })
 }
+
+exports.searchFMD = function(req,res){
+    var fmd = req.query.fmd;
+    dbClient.collection('recipients').find({fmd:fmd}).toArray(function(err,results){
+        if(results.length > 0){
+            res.json({success:true, recipient: results[0]})
+        }
+    })
+}
+
+
 generateLineObj = function(lineObj){
     // lineObj.currentCapacity = parseInt(lineObj.currentCapacity);
     // lineObj.capacity = parseInt(lineObj.capacity);
