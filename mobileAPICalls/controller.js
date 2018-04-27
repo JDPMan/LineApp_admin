@@ -276,7 +276,9 @@ exports.searchFMD = function(req,res){
     var fmd = req.query.fmd;
     dbClient.collection('recipients').find({fmd:fmd}).toArray(function(err,results){
         if(results.length > 0){
-            res.json({success:true, recipient: results[0]})
+            res.json({fmdFound:true, recipient: results[0]})
+        }else{
+            res.json({fmdFOund:false})
         }
     })
 }
