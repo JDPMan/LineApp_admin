@@ -271,6 +271,15 @@ exports.saveRecord = function(req,res){
         res.json({success:true,record:record.value})
     })
 }
+exports.deleteRecord = function(req,res){
+    var _id = mongo.ObjectId(req.query._id);
+    var collection = req.query.type + 's';
+    dbClient.collection(collection).remove({_id:_id},function(err,result){
+        if(err)
+            return res.json({success:false})
+        return res.json({success:true})
+    })
+}
 
 exports.searchFMD = function(req,res){
     var fmd = req.query.fmd;

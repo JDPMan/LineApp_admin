@@ -6,6 +6,7 @@ module.exports = function (app, passport) {
     // app.post('/mobileAPI/attemptLineAccess',APIServices.attemptLineAccess);
     app.get('/mobileAPI/retrieveRecipientActions',APIServices.retrieveRecipientActions);
     app.post('/mobileAPI/saveRecord',APIServices.saveRecord);
+    app.post('/mobileAPI/deleteRecord',APIServices.deleteRecord);
     app.post('/mobileAPI/saveRecipient',APIServices.saveRecipient);
     app.get('/mobileAPI/retrieveSettings',APIServices.retrieveSettings);
     app.get('/mobileAPI/searchRecipient',APIServices.searchRecipient);
